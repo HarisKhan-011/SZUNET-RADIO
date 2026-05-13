@@ -36,6 +36,14 @@ export const channels = [
     label: electricLabel,
     playIcon: electricPlay,
     size: 'regular',
+    playerName: 'ELECTRIC',
+    streams: [
+      {
+        id: 'electric-192',
+        label: '192 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_electric.mp3',
+      },
+    ],
   },
   {
     id: 'oldschool',
@@ -47,6 +55,14 @@ export const channels = [
     label: oldschoolLabel,
     playIcon: oldschoolPlay,
     size: 'regular',
+    playerName: 'OLDSCHOOL',
+    streams: [
+      {
+        id: 'oldschool-192',
+        label: '192 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_oldschool.mp3',
+      },
+    ],
   },
   {
     id: 'prime',
@@ -58,6 +74,24 @@ export const channels = [
     label: null,
     playIcon: mainPlay,
     size: 'feature',
+    playerName: 'SZÜNET',
+    streams: [
+      {
+        id: 'prime-192',
+        label: '192 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_sq.mp3',
+      },
+      {
+        id: 'prime-320',
+        label: '320 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_hq.mp3',
+      },
+      {
+        id: 'prime-64',
+        label: '64 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_lq.aac',
+      },
+    ],
   },
   {
     id: 'power',
@@ -69,6 +103,14 @@ export const channels = [
     label: powerLabel,
     playIcon: powerPlay,
     size: 'regular',
+    playerName: 'POWER',
+    streams: [
+      {
+        id: 'power-192',
+        label: '192 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_power.mp3',
+      },
+    ],
   },
   {
     id: 'relax',
@@ -80,5 +122,13 @@ export const channels = [
     label: relaxLabel,
     playIcon: relaxPlay,
     size: 'regular',
+    playerName: 'RELAX',
+    streams: [
+      {
+        id: 'relax-192',
+        label: '192 kb/s',
+        url: 'https://stream.szunetrad.io/listen/szunetradio/stream_relax.mp3',
+      },
+    ],
   },
 ]

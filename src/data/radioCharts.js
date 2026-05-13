@@ -5,32 +5,32 @@ import bandCover from '../assets/images/668466117_1415711460573623_7254924411462
 
 const baseCards = [
   {
-    id: 'armin',
-    artist: 'Armin Van Buuren',
-    title: 'Turn Magic',
+    id: 'bruno',
+    artist: 'Bruno Mars',
+    title: 'Just Magic',
     image: brunoMars,
     imagePosition: 'center center',
     trend: 'up',
   },
   {
-    id: 'audien',
-    artist: 'Audien',
-    title: 'Wish It Was You',
+    id: 'raye',
+    artist: 'Raye',
+    title: "Where Is My Husband",
     image: heartCover,
     imagePosition: 'center center',
     trend: 'hot',
   },
   {
-    id: 'miley',
-    artist: 'Miley Cyrus',
-    title: 'Prisoner',
+    id: 'olivia',
+    artist: 'Olivia Dean',
+    title: 'Man I Need',
     image: monochromeCover,
     imagePosition: 'center center',
     trend: 'up',
   },
   {
-    id: 'swns',
-    artist: 'SWNS',
+    id: 'bts',
+    artist: 'BTS',
     title: 'Never',
     image: bandCover,
     imagePosition: 'center center',
@@ -38,35 +38,44 @@ const baseCards = [
   },
 ]
 
+const chartCards = Array.from({ length: 30 }, (_, index) => {
+  const card = baseCards[index % baseCards.length]
+
+  return {
+    ...card,
+    id: `${card.id}-${index + 1}`,
+  }
+})
+
 export const radioChartRows = [
   {
     id: 'szunet',
     label: 'SZUNET CHART',
     tone: 'szunet',
-    cards: baseCards,
+    cards: chartCards,
   },
   {
     id: 'oldschool',
-    label: 'OLDSCHOOL CHART',
+    label: 'OLSCHOOL CHART',
     tone: 'oldschool',
-    cards: baseCards,
+    cards: chartCards,
   },
   {
     id: 'power',
     label: 'POWER CHART',
     tone: 'power',
-    cards: baseCards,
+    cards: chartCards,
   },
   {
     id: 'relax',
     label: 'RELAX CHART',
     tone: 'relax',
-    cards: baseCards,
+    cards: chartCards,
   },
   {
     id: 'electric',
     label: 'ELECTRIC CHART',
     tone: 'electric',
-    cards: baseCards,
+    cards: chartCards,
   },
 ]

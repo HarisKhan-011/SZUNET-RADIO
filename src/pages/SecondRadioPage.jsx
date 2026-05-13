@@ -2,36 +2,80 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { brandAssets } from '../data/channels'
 import redBackground from '../assets/images/Rectangle 19.png'
+import smokeBase from '../assets/images/Vector (2).png'
 import ScheduleSection from '../sections/ScheduleSection'
 import RadioChartsSection from '../sections/RadioChartsSection'
 import FooterSection from '../sections/FooterSection'
-import './SecondRadioPage.css'
+import { cx } from '../utils/cx'
 
-const navItems = ['ELECTRIC', 'SZUNET', 'RELAX', 'OLSCHOOL', 'POWER']
+const categoryDotClasses = {
+  blue: 'bg-[#0b68ff]',
+  orange: 'bg-[#ffb000]',
+  green: 'bg-[#26de45]',
+  red: 'bg-[#ff1111]',
+}
+
+const categoryTextRows = [
+  [
+    { label: 'ELECTRIC', color: 'blue' },
+    { label: 'SZUNET', color: 'orange' },
+    { label: 'RELAX', color: 'green' },
+  ],
+  [
+    { label: 'OLDSCHOOL', color: 'red' },
+    { label: 'POWER', color: 'blue' },
+  ],
+]
 
 const calendarMonths = [
   { label: 'APR', year: 2026, days: 30, offset: 2, defaultDay: 8 },
   { label: 'MAY', year: 2026, days: 31, offset: 4, defaultDay: 12 },
 ]
 
-function RadioHeader() {
+function RadioHeader({ onNavigateHome }) {
   return (
-    <header className="second-radio-header">
-      <a className="second-logo" href="/" aria-label="SZUNET RADIO home">
-        <img src={brandAssets.stationLogo} alt="SZUNET RADIO" />
-      </a>
+    <header className="relative z-[5] mx-auto grid w-[var(--page-width)] grid-cols-[minmax(92px,0.5fr)_minmax(280px,1fr)_minmax(92px,0.5fr)] items-start gap-[18px] pt-[clamp(24px,3vw,42px)] max-[980px]:grid-cols-[112px_1fr] max-[700px]:grid-cols-1 max-[700px]:justify-items-center max-[700px]:pt-[22px]">
+      <button
+        className="block w-[clamp(82px,8vw,126px)] cursor-pointer border-0 bg-transparent p-0 max-[700px]:justify-self-start"
+        type="button"
+        aria-label="SZUNET RADIO home"
+        onClick={onNavigateHome}
+      >
+        <img className="block h-auto w-full" src={brandAssets.stationLogo} alt="SZUNET RADIO" />
+      </button>
 
-      <nav className="second-nav" aria-label="Radio categories">
-        {navItems.map((item, index) => (
-          <a
-            className={index === 1 ? 'is-active' : ''}
-            href={`#${item.toLowerCase()}`}
-            key={item}
+      <div
+        className="grid w-[clamp(312px,31vw,482px)] justify-self-center pt-[clamp(16px,1.75vw,26px)] max-[980px]:justify-self-end max-[700px]:w-[min(100%,360px)] max-[700px]:justify-self-center max-[700px]:pt-1.5 max-[420px]:w-full"
+        aria-label="Radio categories"
+      >
+        {categoryTextRows.map((row, rowIndex) => (
+          <div
+            className={cx(
+              'grid items-start justify-items-center',
+              rowIndex === 0 && 'grid-cols-3 gap-x-[clamp(22px,3vw,46px)]',
+              rowIndex === 1 && 'mt-[12px] grid-cols-2 px-[clamp(48px,5vw,78px)] gap-x-[clamp(22px,3vw,46px)] max-[460px]:px-9 max-[380px]:px-6',
+            )}
+            key={`category-row-${rowIndex}`}
           >
-            {item}
-          </a>
+            {row.map((item) => (
+              <span
+                className="relative text-center text-[clamp(13px,1.05vw,18px)] font-black leading-none tracking-[0.15em] text-[rgba(255,255,255,0.9)] uppercase [text-shadow:0_4px_12px_rgba(120,0,0,0.24)] max-[460px]:text-[11px] max-[460px]:tracking-[0.08em]"
+                key={item.label}
+              >
+                {item.label}
+                {rowIndex === 0 ? (
+                  <i
+                    className={cx(
+                      'absolute bottom-[-13px] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full shadow-[0_4px_10px_rgba(0,0,0,0.18)]',
+                      categoryDotClasses[item.color],
+                    )}
+                  />
+                ) : null}
+              </span>
+            ))}
+          </div>
         ))}
-      </nav>
+      </div>
     </header>
   )
 }
@@ -65,35 +109,48 @@ function CalendarWidget() {
 
   return (
     <motion.article
-      className="calendar-widget"
+      className="mt-[clamp(8px,1.6vw,26px)] w-[clamp(156px,15vw,212px)] justify-self-center self-start rounded-lg border border-[rgba(255,255,255,0.72)] bg-[rgba(255,255,255,0.96)] px-3 pb-[13px] pt-[11px] [font-family:Arial,Helvetica,sans-serif] text-[#11112a] shadow-[0_22px_44px_rgba(80,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.72)] max-[980px]:col-[2] max-[980px]:row-[2] max-[980px]:m-0 max-[980px]:self-start max-[700px]:col-auto max-[700px]:row-auto max-[700px]:self-center max-[700px]:justify-self-center max-[460px]:w-[162px]"
       aria-label={`${month.label} ${month.year} calendar`}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: 'easeOut', delay: 0.15 }}
     >
-      <div className="calendar-topbar">
-        <button type="button" aria-label="Previous month" onClick={() => changeMonth(-1)}>
+      <div className="mb-2.5 grid grid-cols-[24px_1fr_24px] items-center">
+        <button
+          className="grid h-[22px] w-[22px] cursor-pointer place-items-center rounded-full border-0 bg-[#f1f1f4] p-0 text-[#080833] transition-[background,color,transform] duration-[160ms] hover:-translate-y-px hover:bg-[#ff1111] hover:text-white"
+          type="button"
+          aria-label="Previous month"
+          onClick={() => changeMonth(-1)}
+        >
           {'<'}
         </button>
-        <strong>
-          {month.label} <span>{month.year}</span>
+        <strong className="text-center text-[10px] font-[950] tracking-[0.08em]">
+          {month.label} <span className="font-extrabold text-[rgba(8,8,51,0.56)]">{month.year}</span>
         </strong>
-        <button type="button" aria-label="Next month" onClick={() => changeMonth(1)}>
+        <button
+          className="grid h-[22px] w-[22px] cursor-pointer place-items-center rounded-full border-0 bg-[#f1f1f4] p-0 text-[#080833] transition-[background,color,transform] duration-[160ms] hover:-translate-y-px hover:bg-[#ff1111] hover:text-white"
+          type="button"
+          aria-label="Next month"
+          onClick={() => changeMonth(1)}
+        >
           {'>'}
         </button>
       </div>
 
-      <div className="calendar-weekdays" aria-hidden="true">
+      <div className="mb-1.5 grid grid-cols-7 text-center text-[8px] font-black text-[rgba(8,8,51,0.5)]" aria-hidden="true">
         {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
           <span key={`${day}-${index}`}>{day}</span>
         ))}
       </div>
 
-      <div className="calendar-days">
+      <div className="grid grid-cols-7 gap-[3px]">
         {calendarCells.map((cell) =>
           cell.day ? (
             <button
-              className={selectedDay === cell.day ? 'is-selected' : ''}
+              className={cx(
+                'grid aspect-square w-full cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-[8px] font-extrabold text-[#20203b] transition-[background,color,transform] duration-[140ms] hover:scale-[1.08] hover:bg-[rgba(255,17,17,0.12)] hover:text-[#ff1111] focus-visible:scale-[1.08] focus-visible:bg-[rgba(255,17,17,0.12)] focus-visible:text-[#ff1111] focus-visible:outline-none',
+                selectedDay === cell.day && 'bg-[#ff1111] text-white shadow-[0_5px_12px_rgba(255,17,17,0.25)] hover:bg-[#ff1111] hover:text-white',
+              )}
               type="button"
               aria-label={`${month.label} ${cell.day}, ${month.year}`}
               aria-pressed={selectedDay === cell.day}
@@ -103,7 +160,7 @@ function CalendarWidget() {
               {cell.day}
             </button>
           ) : (
-            <span aria-hidden="true" key={cell.id} />
+            <span className="aspect-square w-full" aria-hidden="true" key={cell.id} />
           ),
         )}
       </div>
@@ -114,15 +171,26 @@ function CalendarWidget() {
 function TimeWidget() {
   return (
     <motion.div
-      className="time-widget"
+      className="relative grid min-w-[clamp(154px,14vw,220px)] place-items-center self-center justify-self-start [font-family:Arial,Helvetica,sans-serif] text-white max-[980px]:col-[2] max-[980px]:row-[1] max-[980px]:mb-5 max-[980px]:self-end max-[980px]:justify-self-center max-[700px]:col-auto max-[700px]:row-auto max-[700px]:m-0 max-[700px]:self-center max-[700px]:justify-self-center"
       aria-label="Current time 17:25"
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.38, ease: 'easeOut', delay: 0.25 }}
     >
-      <span className="time-chevron time-chevron--top" aria-hidden="true" />
-      <time dateTime="17:25">17:25</time>
-      <span className="time-chevron time-chevron--bottom" aria-hidden="true" />
+      <span className="absolute top-[-21px] h-3 w-[88px] opacity-[0.82]" aria-hidden="true">
+        <span className="absolute left-0 h-3 w-3 rotate-45 border-l-2 border-t-2 border-white" />
+        <span className="absolute right-0 h-3 w-3 rotate-45 border-l-2 border-t-2 border-white" />
+      </span>
+      <time
+        className="text-[clamp(44px,5.4vw,82px)] font-light leading-none tracking-[0.04em] [text-shadow:0_14px_28px_rgba(110,0,0,0.2)] max-[460px]:text-[42px]"
+        dateTime="17:25"
+      >
+        17:25
+      </time>
+      <span className="absolute bottom-[-24px] h-3 w-[88px] opacity-[0.82]" aria-hidden="true">
+        <span className="absolute left-0 h-3 w-3 rotate-[225deg] border-l-2 border-t-2 border-white" />
+        <span className="absolute right-0 h-3 w-3 rotate-[225deg] border-l-2 border-t-2 border-white" />
+      </span>
     </motion.div>
   )
 }
@@ -131,112 +199,160 @@ function RocketIllustration() {
   const prefersReducedMotion = useReducedMotion()
 
   return (
-    <motion.div
-      className="rocket-wrap"
+    <div
+      className="pointer-events-none absolute bottom-[clamp(-38px,-2.7vw,-24px)] left-[70.15%] z-[8] grid w-[clamp(128px,11.2vw,168px)] -translate-x-1/2 justify-items-center max-[980px]:bottom-[-30px] max-[980px]:left-[72%] max-[980px]:w-[140px] max-[700px]:bottom-[-22px] max-[700px]:left-[74%] max-[700px]:w-[104px] max-[420px]:left-[78%] max-[420px]:w-[92px]"
       aria-hidden="true"
-      animate={prefersReducedMotion ? undefined : { y: [-4, 7, -4], rotate: [-1, 1, -1] }}
-      transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
     >
-      <div className="rocket">
-        <span className="rocket-nose" />
-        <span className="rocket-body" />
-        <span className="rocket-window" />
-        <span className="rocket-fin rocket-fin--left" />
-        <span className="rocket-fin rocket-fin--right" />
-        <span className="rocket-flame" />
-      </div>
-      <div className="rocket-clouds">
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
-    </motion.div>
+      <motion.div
+        className="relative z-[2] mb-[-9px]"
+        animate={
+          prefersReducedMotion ? undefined : { y: [-2, 3, -2], rotate: [-0.5, 0.5, -0.5] }
+        }
+        transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <div className="relative mx-auto h-[clamp(74px,6.4vw,96px)] w-[clamp(25px,2.35vw,34px)]">
+          <span className="absolute left-[23%] top-0 h-[31%] w-[54%] rounded-t-[28px] rounded-b-lg bg-[#ffdfd7] [clip-path:polygon(50%_0,100%_82%,0_82%)]" />
+          <span className="absolute inset-x-[20%] top-[20%] bottom-[17%] rounded-t-[26px] rounded-b-xl bg-[linear-gradient(90deg,#ffffff,#f2f7ff_55%,#c9d6e8)] shadow-[0_10px_18px_rgba(83,0,0,0.2)]" />
+          <span className="absolute left-[35%] top-[30%] h-[11%] w-[30%] rounded-full border-[clamp(2px,0.22vw,3px)] border-[#00a8c7] bg-[#60f0ff] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.7)]" />
+          <span className="absolute bottom-[16%] left-0 h-[23%] w-[36%] bg-[#00dce6] [clip-path:polygon(100%_0,100%_100%,0_100%)]" />
+          <span className="absolute bottom-[16%] right-0 h-[23%] w-[36%] bg-[#00dce6] [clip-path:polygon(0_0,100%_100%,0_100%)]" />
+          <motion.span
+            className="absolute bottom-[-3px] left-[39%] h-[clamp(12px,1.45vw,19px)] w-[22%] rounded-full bg-[linear-gradient(#ffec5c,#ff8a00_52%,rgba(255,106,0,0))] [filter:drop-shadow(0_0_8px_rgba(255,235,80,0.5))] [transform-origin:top]"
+            animate={prefersReducedMotion ? undefined : { scaleY: [0.78, 1.14], opacity: [0.74, 1] }}
+            transition={{ duration: 0.52, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }}
+          />
+        </div>
+      </motion.div>
+
+      <motion.div
+        className="relative z-[1] mt-[-6px] grid h-[clamp(50px,5.2vw,78px)] w-[86%] origin-bottom items-end overflow-hidden"
+        aria-hidden="true"
+        initial={false}
+        animate={prefersReducedMotion ? undefined : { scaleX: [0.995, 1.01, 0.995] }}
+        transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <img
+          className="block h-full w-full max-w-none object-contain object-bottom opacity-[0.8] [filter:drop-shadow(0_4px_7px_rgba(7,7,56,0.06))]"
+          src={smokeBase}
+          alt=""
+        />
+      </motion.div>
+    </div>
   )
 }
 
 function EditorialCopy() {
   return (
     <motion.div
-      className="editorial-copy"
+      className="relative ml-[clamp(34px,5vw,84px)] w-fit text-[clamp(32px,4.7vw,72px)] font-black leading-[0.95] tracking-[0.13em] text-white uppercase [text-shadow:0_8px_20px_rgba(120,0,0,0.22)] max-[980px]:col-[1] max-[980px]:row-[1/3] max-[980px]:ml-0 max-[980px]:text-[clamp(42px,7vw,60px)] max-[700px]:col-auto max-[700px]:row-auto max-[700px]:m-0 max-[700px]:text-center max-[700px]:text-[clamp(30px,9vw,58px)] max-[700px]:[transform-origin:center] max-[420px]:tracking-[0.08em]"
       initial={{ opacity: 0, x: -22, rotate: -5 }}
       animate={{ opacity: 1, x: 0, rotate: -5 }}
       transition={{ duration: 0.48, ease: 'easeOut' }}
     >
-      <p>MEGTETSZETT?</p>
-      <p>KERESD</p>
-      <p>VISSZA!</p>
+      <span
+        className="absolute bottom-[-38px] left-4 h-[70px] w-[180px] bg-[radial-gradient(circle,#ffffff_0_1px,transparent_1.5px)] bg-[length:10px_10px] opacity-[0.18]"
+        aria-hidden="true"
+      />
+      <p className="relative z-[1] m-0">MEGTETSZETT?</p>
+      <p className="relative z-[1] m-0 ml-[clamp(70px,7vw,126px)] max-[700px]:ml-0">KERESD</p>
+      <p className="relative z-[1] m-0 ml-[clamp(112px,10vw,170px)] max-[700px]:ml-0">VISSZA!</p>
     </motion.div>
   )
 }
 
 function DecorativeElements() {
+  const crossLineClass = 'absolute left-1/2 top-1/2 h-px w-4 -translate-x-1/2 -translate-y-1/2 bg-white'
+
   return (
-    <div className="second-decor" aria-hidden="true">
-      <span className="decor-cross decor-cross--one" />
-      <span className="decor-cross decor-cross--two" />
-      <span className="decor-cross decor-cross--three" />
-      <span className="decor-dot decor-dot--one" />
-      <span className="decor-dot decor-dot--two" />
-      <span className="decor-lines" />
-      <span className="decor-triangles" />
-      <span className="decor-wave" />
+    <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
+      <span className="absolute left-[29%] top-[7%] block h-[18px] w-[18px]">
+        <span className={crossLineClass} />
+        <span className={cx(crossLineClass, 'rotate-90')} />
+      </span>
+      <span className="absolute bottom-[31%] left-[17%] block h-[18px] w-[18px] rotate-[21deg]">
+        <span className={crossLineClass} />
+        <span className={cx(crossLineClass, 'rotate-90')} />
+      </span>
+      <span className="absolute right-[21%] top-[24%] block h-[18px] w-[18px] rotate-45">
+        <span className={crossLineClass} />
+        <span className={cx(crossLineClass, 'rotate-90')} />
+      </span>
+      <span className="absolute left-[2%] top-[6%] block h-[15px] w-[15px] rounded-full border-4 border-white" />
+      <span className="absolute right-[2%] top-[6%] block h-[15px] w-[15px] rounded-full border-4 border-white" />
+      <span className="absolute right-[7%] top-[36%] block h-[118px] w-0.5 bg-[repeating-linear-gradient(to_bottom,#ffffff_0_2px,transparent_2px_12px)] opacity-[0.44] max-[700px]:hidden" />
+      <span className="absolute right-[4%] top-[43%] block h-28 w-[22px] bg-[linear-gradient(135deg,transparent_50%,#ffffff_51%_58%,transparent_59%),linear-gradient(45deg,transparent_50%,#ffffff_51%_58%,transparent_59%)] bg-[length:20px_20px] opacity-[0.56] max-[700px]:hidden" />
+      <span className="absolute bottom-[20%] left-[42%] block h-px w-[170px] bg-[repeating-linear-gradient(90deg,transparent_0_10px,#ffffff_10px_12px,transparent_12px_18px)] opacity-[0.45] max-[700px]:hidden" />
     </div>
   )
 }
 
 function ScheduleTimelineSection() {
   return (
-    <div className="second-schedule-wrap">
-      <ScheduleSection />
+    <div className="relative z-[4] overflow-visible border-b-[4px] border-[#5cf5df] bg-white pb-0 pt-[clamp(10px,1.1vw,16px)] [--launch-x:70.15%] max-[700px]:overflow-hidden">
+      <ScheduleSection variant="hero" />
+      <RocketIllustration />
     </div>
   )
 }
 
-function HeroRadioSection() {
+function HeroRadioSection({ onNavigateHome }) {
   return (
-    <section className="second-hero" aria-label="SZUNET RADIO archive hero">
-      <img className="second-hero-bg" src={redBackground} alt="" aria-hidden="true" />
-      <div className="second-hero-overlay" />
+    <section
+      className="relative isolate z-[1] flex min-h-[clamp(500px,46vw,640px)] flex-col overflow-hidden bg-[#ff0808] max-[980px]:min-h-[600px] max-[700px]:min-h-[720px] max-[460px]:min-h-[680px]"
+      aria-label="SZUNET RADIO archive hero"
+    >
+      <img
+        className="pointer-events-none absolute inset-0 -z-[3] h-full w-full object-cover object-center"
+        src={redBackground}
+        alt=""
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 -z-[2] bg-[linear-gradient(180deg,rgba(255,2,2,0.12),rgba(255,2,2,0.3)),radial-gradient(circle_at_72%_32%,rgba(255,255,255,0.12),transparent_23%),#ff0808]"
+        aria-hidden="true"
+      />
       <DecorativeElements />
 
-      <RadioHeader />
+      <RadioHeader onNavigateHome={onNavigateHome} />
 
-      <div className="second-hero-stage">
+      <div className="relative z-[3] mx-auto grid min-h-[clamp(310px,31vw,430px)] w-[var(--page-width)] flex-1 grid-cols-[minmax(260px,0.9fr)_minmax(168px,0.48fr)_minmax(190px,0.74fr)] items-center gap-[clamp(18px,4vw,86px)] pb-[clamp(26px,3.2vw,48px)] pt-[clamp(12px,2vw,28px)] max-[980px]:min-h-[390px] max-[980px]:grid-cols-[minmax(0,1fr)_minmax(168px,240px)] max-[980px]:grid-rows-[auto_auto] max-[980px]:gap-x-8 max-[980px]:gap-y-6 max-[700px]:min-h-[500px] max-[700px]:grid-cols-1 max-[700px]:grid-rows-none max-[700px]:justify-items-center max-[700px]:gap-[20px] max-[700px]:pt-6 max-[460px]:min-h-[470px]">
         <EditorialCopy />
         <CalendarWidget />
         <TimeWidget />
-        <RocketIllustration />
       </div>
-
-      <ScheduleTimelineSection />
     </section>
   )
 }
 
 function ChartsSection() {
   return (
-    <section className="charts-section" aria-label="Charts">
+    <section
+      className="relative z-0 grid min-h-[clamp(210px,24vw,320px)] place-items-center overflow-hidden bg-[#5cf5df] text-[#050526]"
+      aria-label="Charts"
+    >
       <motion.h1
+        className="relative z-0 m-0 max-w-[94vw] text-[clamp(58px,12vw,174px)] font-[950] leading-[0.82] tracking-[0.18em] uppercase [text-shadow:0_1px_0_rgba(255,255,255,0.44)] max-[640px]:text-[clamp(52px,14vw,82px)] max-[640px]:tracking-[0.1em] max-[460px]:text-[clamp(44px,13vw,58px)] max-[460px]:tracking-[0.06em] max-[360px]:text-[40px]"
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.65 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
         CHARTS
+        <span className="absolute left-[-2%] right-[8%] bottom-[12%] -z-[1] h-[clamp(12px,1.4vw,22px)] bg-[#ff1111]" aria-hidden="true" />
       </motion.h1>
     </section>
   )
 }
 
-function SecondRadioPage() {
+function SecondRadioPage({ onNavigateHome }) {
   return (
-    <main className="second-page">
-      <HeroRadioSection />
+    <div className="min-h-[100svh] overflow-x-hidden bg-[#5cf5df] text-white [--page-width:min(1448px,calc(100vw-40px))] max-[700px]:[--page-width:calc(100vw-24px)]">
+      <HeroRadioSection onNavigateHome={onNavigateHome} />
+      <ScheduleTimelineSection />
       <ChartsSection />
       <RadioChartsSection />
       <FooterSection />
-    </main>
+    </div>
   )
 }
 

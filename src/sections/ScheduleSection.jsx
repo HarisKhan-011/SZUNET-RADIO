@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { scheduleItems } from '../data/schedule'
-import './ScheduleSection.css'
+import { cx } from '../utils/cx'
 
 const DEFAULT_ACTIVE_ITEM_ID = '1745'
 const TICK_COUNT = 96
@@ -15,7 +15,7 @@ function ScheduleTrackCard({ item, index, isActive, onSelect, anchor }) {
 
   return (
     <motion.article
-      className={`schedule-card snap-center ${isActive ? 'is-active' : ''}`}
+      className="relative min-w-0 snap-center px-[clamp(5px,0.85vw,14px)] [transform-origin:center_bottom]"
       style={{ '--card-anchor': anchor }}
       initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
       animate={{
@@ -30,7 +30,13 @@ function ScheduleTrackCard({ item, index, isActive, onSelect, anchor }) {
       }}
     >
       <motion.button
-        className="schedule-card-button group"
+        className={cx(
+          'group relative grid w-full min-w-0 cursor-pointer grid-rows-[auto_auto_auto] gap-1 rounded-lg border border-transparent bg-transparent p-[3px] text-left text-[#050526] transition-[border-color,box-shadow,background] duration-[160ms] motion-reduce:transition-none',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008eff]',
+          'hover:border-[rgba(0,142,255,0.44)] hover:bg-[rgba(255,255,255,0.38)] hover:shadow-[0_8px_16px_rgba(7,7,56,0.11)]',
+          isActive &&
+            'border-[rgba(255,17,17,0.56)] bg-[rgba(255,255,255,0.46)] shadow-[0_10px_18px_rgba(7,7,56,0.15),0_0_0_1px_rgba(255,255,255,0.66),0_0_18px_rgba(0,142,255,0.18)]',
+        )}
         type="button"
         aria-label={`Play ${item.artist} - ${item.title} at ${item.time}`}
         aria-pressed={isActive}
@@ -38,34 +44,74 @@ function ScheduleTrackCard({ item, index, isActive, onSelect, anchor }) {
         whileHover={prefersReducedMotion ? undefined : { y: -3 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
       >
-        <div className="schedule-copy">
-          <span>{item.artist}</span>
-          <strong>{item.title}</strong>
+        <div className="grid min-h-[18px] min-w-0 gap-px leading-none">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap [font-family:Arial,Helvetica,sans-serif] text-[clamp(6px,0.52vw,8px)] font-extrabold text-[rgba(5,5,38,0.82)]">
+            {item.artist}
+          </span>
+          <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(6px,0.54vw,8px)] font-[950] text-[#050526]">
+            {item.title}
+          </strong>
         </div>
 
-        <div className="schedule-cover-wrap">
+        <div
+          className={cx(
+            'relative isolate aspect-square overflow-hidden rounded-sm bg-[#d9d9de] shadow-[0_6px_12px_rgba(7,7,56,0.16),inset_0_0_0_1px_rgba(255,255,255,0.36)]',
+            isActive && 'shadow-[0_8px_16px_rgba(7,7,56,0.22),0_0_0_2px_rgba(255,17,17,0.82)]',
+          )}
+        >
           <img
-            className="schedule-cover"
+            className="block h-full w-full object-cover transition-transform duration-[220ms] motion-reduce:transition-none group-hover:scale-[1.035]"
             src={item.cover}
             alt={`${item.artist} - ${item.title}`}
           />
-          <span className="schedule-play" aria-hidden="true">
+          <span
+            className="pointer-events-none absolute inset-x-0 bottom-0 top-[38%] z-[1] bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.28))]"
+            aria-hidden="true"
+          />
+          <span
+            className="absolute bottom-[3px] right-[3px] z-[2] grid h-[clamp(18px,1.8vw,25px)] w-[clamp(18px,1.8vw,25px)] place-items-center rounded-full border border-[rgba(255,255,255,0.82)] bg-[rgba(7,7,56,0.7)] shadow-[0_5px_10px_rgba(0,0,0,0.24)]"
+            aria-hidden="true"
+          >
             {isActive ? (
-              <span className="schedule-equalizer">
-                <i />
-                <i />
-                <i />
+              <span className="inline-flex h-3 items-end gap-0.5">
+                {[0, 1, 2].map((bar) => (
+                  <motion.i
+                    className="block w-[3px] rounded-full bg-white"
+                    animate={prefersReducedMotion ? { height: 5 } : { height: [4, 12, 4] }}
+                    transition={{
+                      duration: 0.76,
+                      ease: 'easeInOut',
+                      repeat: prefersReducedMotion ? 0 : Infinity,
+                      delay: bar * 0.12,
+                    }}
+                    key={bar}
+                  />
+                ))}
               </span>
             ) : (
-              <span className="schedule-play-icon" />
+              <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-white" />
             )}
           </span>
         </div>
 
-        <time className="schedule-time" dateTime={item.time}>
+        <time
+          className={cx(
+            'inline-grid min-h-3.5 min-w-[38px] place-items-center justify-self-center [font-family:Arial,Helvetica,sans-serif] text-[clamp(7px,0.6vw,9px)] font-[950] leading-none text-[#080833] [text-shadow:0_1px_0_rgba(255,255,255,0.5)]',
+            isActive && 'text-[#ff1111]',
+          )}
+          dateTime={item.time}
+        >
           {item.time}
         </time>
       </motion.button>
+
+      <span
+        className={cx(
+          'absolute bottom-[-10px] left-1/2 h-3 w-px -translate-x-1/2 bg-[rgba(7,7,56,0.52)]',
+          isActive && 'w-0.5 bg-[#ff1111] shadow-[0_0_12px_rgba(255,17,17,0.56)]',
+        )}
+        aria-hidden="true"
+      />
     </motion.article>
   )
 }
@@ -77,47 +123,65 @@ function ScheduleTimeline({ items, activeIndex, activeItem, onSelect }) {
 
   return (
     <div
-      className="schedule-timeline"
+      className="relative mt-px h-[42px] w-full"
       style={{ '--timeline-progress': progress }}
       aria-label="Schedule progress timeline"
     >
-      <div className="timeline-progress-lane" aria-hidden="true">
+      <div
+        className="absolute inset-x-0 top-[3px] h-[3px] overflow-hidden rounded-full bg-[rgba(7,7,56,0.2)]"
+        aria-hidden="true"
+      >
         <motion.span
-          className="timeline-progress"
+          className="absolute inset-y-0 left-0 rounded-[inherit] bg-[linear-gradient(90deg,#070738,#008eff_62%,#ff1111)] shadow-[0_0_10px_rgba(0,142,255,0.28)]"
           initial={false}
           animate={{ width: progress }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.32, ease: 'easeOut' }}
         />
       </div>
 
-      <div className="timeline-ruler" aria-hidden="true">
-        <div className="timeline-minor-ticks">
+      <div className="absolute inset-x-0 top-2 h-[30px]" aria-hidden="true">
+        <span className="absolute left-0 right-0 top-px h-px bg-[rgba(7,7,56,0.34)]" />
+        <div className="absolute inset-0 grid grid-cols-[repeat(96,1fr)] items-start">
           {minorTicks.map((tick) => (
             <span
-              className={tick % 12 === 0 ? 'is-measure' : tick % 4 === 0 ? 'is-mid' : ''}
+              className={cx(
+                'block h-[11px] w-px justify-self-center bg-[rgba(7,7,56,0.72)]',
+                tick % 4 === 0 && 'h-4 bg-[rgba(7,7,56,0.82)]',
+                tick % 12 === 0 && 'h-[22px] bg-[#070738]',
+              )}
               key={tick}
             />
           ))}
         </div>
       </div>
 
-      <ol className="timeline-major-ticks">
+      <ol className="absolute inset-x-0 top-2 h-[30px] list-none p-0">
         {items.map((item, index) => {
           const position = getAnchor(index, items.length)
+          const isActive = index === activeIndex
 
           return (
             <li
-              className={index === activeIndex ? 'is-active' : ''}
+              className="absolute top-0 -translate-x-1/2"
               key={item.id}
-              style={{ '--tick-position': position }}
+              style={{ left: position }}
             >
               <button
+                className="group grid h-[30px] w-[38px] cursor-pointer content-start justify-items-center border-0 bg-transparent p-0 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008eff]"
                 type="button"
                 aria-label={`Jump to ${item.time}, ${item.artist} - ${item.title}`}
                 onClick={() => onSelect(item.id)}
               >
-                <span className="major-tick-line" aria-hidden="true" />
-                <time dateTime={item.time}>{item.time}</time>
+                <span
+                  className={cx(
+                    'h-[27px] w-0.5 rounded-full bg-[#070738] transition-[background,box-shadow,height] duration-[160ms] motion-reduce:transition-none group-hover:bg-[#008eff] group-hover:shadow-[0_0_10px_rgba(0,142,255,0.48)]',
+                    isActive && 'h-[31px] bg-[#ff1111] shadow-[0_0_12px_rgba(255,17,17,0.62)] group-hover:bg-[#ff1111]',
+                  )}
+                  aria-hidden="true"
+                />
+                <time className="sr-only" dateTime={item.time}>
+                  {item.time}
+                </time>
               </button>
             </li>
           )
@@ -125,20 +189,31 @@ function ScheduleTimeline({ items, activeIndex, activeItem, onSelect }) {
       </ol>
 
       <motion.div
-        className="timeline-now"
+        className="pointer-events-none absolute top-[-5px] z-[4] -translate-x-1/2"
         aria-live="polite"
         initial={false}
         animate={{ left: progress }}
         transition={{ duration: prefersReducedMotion ? 0 : 0.32, ease: 'easeOut' }}
       >
-        <span>{activeItem.time}</span>
+        <span
+          className="absolute left-1/2 top-[17px] h-[22px] w-[22px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,17,17,0.18),transparent_70%)]"
+          aria-hidden="true"
+        />
+        <span
+          className="absolute left-1/2 top-[19px] h-[30px] w-0.5 -translate-x-1/2 rounded-full bg-[linear-gradient(#ff1111,rgba(255,17,17,0))]"
+          aria-hidden="true"
+        />
+        <span className="relative z-[2] inline-grid min-h-[18px] min-w-[38px] place-items-center rounded-full border border-[rgba(255,255,255,0.72)] bg-[#070738] px-[7px] [font-family:Arial,Helvetica,sans-serif] text-[8px] font-[950] leading-none text-white shadow-[0_5px_14px_rgba(7,7,56,0.28),0_0_12px_rgba(0,142,255,0.22)]">
+          {activeItem.time}
+        </span>
       </motion.div>
     </div>
   )
 }
 
-function ScheduleSection() {
+function ScheduleSection({ variant = 'default' }) {
   const [activeItemId, setActiveItemId] = useState(DEFAULT_ACTIVE_ITEM_ID)
+  const isHeroVariant = variant === 'hero'
 
   const activeIndex = useMemo(() => {
     const index = scheduleItems.findIndex((item) => item.id === activeItemId)
@@ -148,28 +223,43 @@ function ScheduleSection() {
   const activeItem = scheduleItems[activeIndex] ?? scheduleItems[0]
 
   return (
-    <section className="schedule-section" aria-label="Upcoming songs timeline">
-      <div className="schedule-board">
-        <div className="schedule-scroll overflow-x-auto scroll-smooth">
-          <div className="schedule-grid">
-            {scheduleItems.map((item, index) => (
-              <ScheduleTrackCard
-                anchor={getAnchor(index, scheduleItems.length)}
-                item={item}
-                index={index}
-                isActive={item.id === activeItem.id}
-                key={item.id}
-                onSelect={setActiveItemId}
-              />
-            ))}
-          </div>
+    <section
+      className={cx('bg-transparent pt-2 max-[560px]:pt-[7px]', isHeroVariant && 'pt-0 max-[560px]:pt-0')}
+      aria-label="Upcoming songs timeline"
+    >
+      <div
+        className={cx(
+          'relative isolate mx-auto w-[var(--page-width)] overflow-hidden rounded-[14px] border border-[rgba(7,7,56,0.1)] bg-[linear-gradient(180deg,rgba(255,255,255,0.74),rgba(230,229,232,0.96)),#e8e6e7] shadow-[0_10px_26px_rgba(7,7,56,0.1),inset_0_1px_0_rgba(255,255,255,0.76)] max-[560px]:w-[calc(100vw-20px)] max-[560px]:rounded-xl',
+          isHeroVariant &&
+            'rounded-[9px] border-[rgba(255,255,255,0.7)] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(235,235,241,0.98)),#ececf0] shadow-[0_14px_30px_rgba(76,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.84)] max-[560px]:w-[var(--page-width)]',
+        )}
+      >
+        <span
+          className="pointer-events-none absolute inset-0 -z-[1] bg-[linear-gradient(90deg,rgba(255,255,255,0.32),transparent_13%,transparent_87%,rgba(255,255,255,0.28)),repeating-linear-gradient(90deg,rgba(7,7,56,0.035)_0_1px,transparent_1px_84px)]"
+          aria-hidden="true"
+        />
+        <div className="relative z-[1] overflow-x-auto overscroll-x-contain scroll-smooth px-2.5 pb-[7px] pt-2 [scroll-padding-inline:10px] [scrollbar-width:none] [scroll-snap-type:x_proximity] [&::-webkit-scrollbar]:hidden max-[560px]:px-2 max-[560px]:py-[7px]">
+          <div className="min-w-[740px] max-[900px]:min-w-[720px] max-[560px]:min-w-[660px] max-[420px]:min-w-[620px]">
+            <div className="grid w-full grid-cols-[repeat(8,minmax(72px,1fr))] items-end gap-x-0 max-[560px]:grid-cols-[repeat(8,72px)] max-[420px]:grid-cols-[repeat(8,68px)]">
+              {scheduleItems.map((item, index) => (
+                <ScheduleTrackCard
+                  anchor={getAnchor(index, scheduleItems.length)}
+                  item={item}
+                  index={index}
+                  isActive={item.id === activeItem.id}
+                  key={item.id}
+                  onSelect={setActiveItemId}
+                />
+              ))}
+            </div>
 
-          <ScheduleTimeline
-            items={scheduleItems}
-            activeIndex={activeIndex}
-            activeItem={activeItem}
-            onSelect={setActiveItemId}
-          />
+            <ScheduleTimeline
+              items={scheduleItems}
+              activeIndex={activeIndex}
+              activeItem={activeItem}
+              onSelect={setActiveItemId}
+            />
+          </div>
         </div>
       </div>
     </section>

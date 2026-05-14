@@ -15,7 +15,7 @@ function MixcloudCard({ item, variant = 'top' }) {
   return (
     <article
       className={cx(
-        'relative aspect-[1.08/1] overflow-hidden bg-[#101018]',
+        'relative min-w-0 aspect-[1.08/1] overflow-hidden bg-[#101018]',
         isBottom && 'aspect-[1.24/1]',
         item.active && 'outline-4 -outline-offset-4 outline-[#0098ff]',
       )}
@@ -105,23 +105,27 @@ function MixcloudSection() {
         aria-hidden="true"
       />
 
-      <div className="relative z-[1] mx-auto w-[min(100%,var(--page-width))] px-[clamp(12px,1.5vw,18px)] pb-7 pt-5">
-        <div className="grid grid-cols-4 gap-[clamp(10px,1.25vw,18px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
+        <div className="relative z-[1] mx-auto w-[min(100%,var(--page-width))] min-w-0 px-[clamp(12px,1.5vw,18px)] pb-7 pt-5">
+        <div className="grid min-w-0 grid-cols-4 gap-[clamp(10px,1.25vw,18px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
           {topMixcloudItems.map((item) => (
             <MixcloudCard item={item} key={item.id} />
           ))}
         </div>
 
-        <div className="grid min-h-[130px] grid-cols-[minmax(260px,0.92fr)_minmax(230px,0.48fr)] items-center gap-[clamp(18px,3vw,54px)] max-[700px]:min-h-[112px] max-[700px]:grid-cols-1 max-[700px]:gap-3 max-[700px]:py-5">
-          <img className="w-[min(100%,650px)] max-w-none max-[700px]:mx-auto max-[700px]:w-[min(86vw,430px)] max-[420px]:w-[min(78vw,320px)]" src={mixcloudLogo} alt="Mixcloud" />
-          <p className="m-0 max-w-[48ch] [font-family:Arial,Helvetica,sans-serif] text-[clamp(10px,1vw,15px)] font-extrabold leading-[1.65] text-[#05051c] max-[700px]:max-w-[62ch]">
+        <div className="grid min-h-[130px] grid-cols-[minmax(200px,0.92fr)_minmax(180px,0.48fr)] items-center gap-[clamp(14px,3vw,54px)] max-[700px]:min-h-0 max-[700px]:grid-cols-1 max-[700px]:gap-4 max-[700px]:py-4">
+          <img
+            className="w-[min(100%,650px)] max-w-none justify-self-start max-[700px]:mx-auto max-[700px]:w-[min(86vw,430px)] max-[420px]:w-[min(78vw,320px)]"
+            src={mixcloudLogo}
+            alt="Mixcloud"
+          />
+          <p className="m-0 min-w-0 max-w-[52ch] overflow-hidden [display:-webkit-box] [font-family:Arial,Helvetica,sans-serif] text-[clamp(10px,1vw,15px)] font-extrabold leading-[1.55] text-[#05051c] [-webkit-box-orient:vertical] [-webkit-line-clamp:4] max-[700px]:max-w-none max-[700px]:text-center max-[700px]:[-webkit-line-clamp:5]">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
             ad minim veniam, quis.
           </p>
         </div>
 
-        <div className="grid grid-cols-4 gap-[clamp(10px,1.25vw,18px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
+        <div className="grid min-w-0 grid-cols-4 gap-[clamp(10px,1.25vw,18px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
           {bottomMixcloudItems.map((item) => (
             <MixcloudCard item={item} key={item.id} variant="bottom" />
           ))}

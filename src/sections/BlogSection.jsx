@@ -14,11 +14,11 @@ function BlogSection() {
           <span className="absolute right-[-9px] bottom-[2px] z-0 h-3 w-[70%] bg-[#ff1111]" aria-hidden="true" />
         </header>
 
-        <div className="relative z-[2] grid grid-cols-4 gap-[clamp(14px,1.55vw,22px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
+        <div className="relative z-[2] grid min-w-0 grid-cols-4 gap-[clamp(14px,1.55vw,22px)] max-[760px]:grid-cols-2 max-[480px]:gap-3">
           {blogPosts.map((post) => (
             <article
               className={cx(
-                'relative aspect-[1.02/1] overflow-hidden bg-[#0b0b15] max-[480px]:aspect-[0.92/1]',
+                'relative min-w-0 aspect-[1.02/1] overflow-hidden bg-[#0b0b15] max-[480px]:aspect-[0.92/1]',
                 post.featured && 'outline-4 -outline-offset-4 outline-[#0098ff]',
               )}
               key={post.id}
@@ -33,19 +33,17 @@ function BlogSection() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 top-[38%] bg-[linear-gradient(180deg,transparent,rgba(0,0,0,0.86))]"
                 aria-hidden="true"
               />
-              <div className="absolute right-[clamp(12px,1.4vw,22px)] bottom-[clamp(16px,1.7vw,24px)] left-[clamp(12px,1.4vw,22px)] z-[1] text-white max-[480px]:right-2.5 max-[480px]:bottom-2.5 max-[480px]:left-2.5">
-                <h2 className="relative z-0 mb-[9px] block max-w-full overflow-hidden [font-family:Arial,Helvetica,sans-serif] text-[clamp(16px,2.1vw,34px)] font-[950] leading-[0.9] uppercase max-[480px]:text-[clamp(14px,4.7vw,18px)]">
-                  <span className="relative inline-block w-fit max-w-full overflow-hidden text-ellipsis whitespace-nowrap align-top">
-                    <span className="relative z-[1] drop-shadow-[0_1px_1px_rgba(0,0,0,0.65)]">
+              <div className="absolute right-[clamp(12px,1.4vw,22px)] bottom-[clamp(16px,1.7vw,24px)] left-[clamp(12px,1.4vw,22px)] z-[1] min-w-0 max-w-full text-white max-[480px]:right-2.5 max-[480px]:bottom-2.5 max-[480px]:left-2.5">
+                <h2 className="relative z-0 mb-[9px] min-w-0 max-w-full [font-family:Arial,Helvetica,sans-serif] text-[clamp(16px,2.1vw,34px)] font-[950] leading-[1] uppercase max-[480px]:mb-2 max-[480px]:text-[clamp(14px,4.7vw,18px)]">
+                  <span className="relative z-[1] block min-w-0 w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap drop-shadow-[0_1px_1px_rgba(0,0,0,0.65)]">
                     {post.title}
-                    </span>
-                    <span
-                      className="absolute inset-x-0 bottom-[-0.02em] z-0 h-[0.28em] bg-[#ff1111] max-[480px]:h-[0.3em]"
-                      aria-hidden="true"
-                    />
                   </span>
+                  <span
+                    className="pointer-events-none absolute left-0 right-[15%] bottom-[-0.02em] z-0 h-[0.28em] max-w-full bg-[#ff1111] max-[480px]:h-[0.3em]"
+                    aria-hidden="true"
+                  />
                 </h2>
-                <p className="m-0 max-w-[24ch] overflow-hidden [display:-webkit-box] [font-family:Arial,Helvetica,sans-serif] text-[clamp(7px,0.74vw,11px)] font-semibold leading-[1.15] [-webkit-box-orient:vertical] [-webkit-line-clamp:4] max-[480px]:max-w-[20ch] max-[480px]:[-webkit-line-clamp:3]">
+                <p className="m-0 min-w-0 w-full max-w-full overflow-hidden [display:-webkit-box] [font-family:Arial,Helvetica,sans-serif] text-[clamp(7px,0.74vw,11px)] font-semibold leading-[1.2] [-webkit-box-orient:vertical] [-webkit-line-clamp:4] max-[480px]:leading-[1.18]">
                   {post.excerpt}
                 </p>
               </div>

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { channels, defaultChannelId } from './data/channels'
 import HeroSection from './sections/HeroSection'
 import PlayerBar from './sections/PlayerBar'
@@ -7,24 +7,23 @@ import BlogSection from './sections/BlogSection'
 import MixcloudSection from './sections/MixcloudSection'
 import FooterSection from './sections/FooterSection'
 import SecondRadioPage from './pages/SecondRadioPage'
+import SongSearchPage from './pages/SongSearchPage'
+import RevealOnScroll from './components/RevealOnScroll'
 import blueRing from './assets/images/Ellipse 5.png'
 
 function getInitialView() {
-  const normalizedPath = window.location.pathname.replace(/\/$/, '')
-  return normalizedPath === '/second-page' || window.location.hash === '#second-page'
-    ? 'archive'
-    : 'home'
+  const normalizedPath = window.location.pathname.replace(/\/$/, '') || '/'
+  const hash = window.location.hash
+  if (normalizedPath === '/second-page' || hash === '#second-page') return 'archive'
+  if (normalizedPath === '/dal-kereses' || normalizedPath === '/dalkereses' || hash === '#dal-kereses')
+    return 'search'
+  return 'home'
 }
 
-function LandingPage({ playingChannelId, onNavigateArchive, onToggleChannel }) {
+function LandingPage({ playingChannelId, onToggleChannel }) {
   return (
     <>
-      <HeroSection
-        channels={channels}
-        playingChannelId={playingChannelId}
-        onNavigateArchive={onNavigateArchive}
-        onToggleChannel={onToggleChannel}
-      />
+      <HeroSection channels={channels} playingChannelId={playingChannelId} onToggleChannel={onToggleChannel} />
       <div className="relative isolate overflow-hidden bg-white">
         <img
           className="pointer-events-none absolute top-[clamp(96px,9vw,152px)] right-[clamp(-470px,-24vw,-235px)] z-0 w-[clamp(600px,58vw,890px)] max-w-none opacity-[0.96] max-[1180px]:top-[138px] max-[1180px]:right-[-370px] max-[1180px]:w-[620px] max-[1180px]:opacity-[0.72] max-[900px]:top-[168px] max-[900px]:right-[-390px] max-[900px]:w-[520px] max-[900px]:opacity-[0.52] max-[760px]:top-[188px] max-[760px]:right-[-335px] max-[760px]:w-[430px] max-[760px]:opacity-[0.48] max-[560px]:top-[168px] max-[560px]:right-[-338px] max-[560px]:w-[420px] max-[560px]:opacity-[0.42] max-[420px]:top-[168px] max-[420px]:right-[-290px] max-[420px]:w-[350px] max-[380px]:right-[-270px] max-[380px]:w-[330px]"
@@ -33,12 +32,20 @@ function LandingPage({ playingChannelId, onNavigateArchive, onToggleChannel }) {
           aria-hidden="true"
         />
         <div className="relative z-[1]">
-          <ScheduleSection />
-          <BlogSection />
-          <MixcloudSection />
+          <RevealOnScroll>
+            <ScheduleSection />
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.06}>
+            <BlogSection />
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1}>
+            <MixcloudSection />
+          </RevealOnScroll>
         </div>
       </div>
-      <FooterSection />
+      <RevealOnScroll delay={0.04}>
+        <FooterSection />
+      </RevealOnScroll>
     </>
   )
 }
@@ -118,12 +125,56 @@ function App() {
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
 
-  function navigate(nextView) {
+  const navigate = useCallback((nextView) => {
     setView(nextView)
-    const nextUrl = nextView === 'archive' ? '/second-page' : '/'
+    const nextUrl =
+      nextView === 'archive' ? '/second-page' : nextView === 'search' ? '/dal-kereses' : '/'
     window.history.pushState({ view: nextView }, '', nextUrl)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  }, [])
+
+  /** Same-origin in-app routes: no full reload; audio element stays mounted. */
+  useEffect(() => {
+    function onDocumentClick(event) {
+      if (event.defaultPrevented) return
+      const el = event.target
+      if (!(el instanceof Element)) return
+      const anchor = el.closest('a[href]')
+      if (!anchor) return
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+      const href = anchor.getAttribute('href')
+      if (!href || href.startsWith('http') || href.startsWith('mailto:')) return
+
+      const pathOnly = href.split('#')[0].split('?')[0]
+      const hash = href.includes('#') ? href.slice(href.indexOf('#')) : ''
+
+      if (pathOnly === '/second-page' || pathOnly === '/second-page/' || hash === '#second-page') {
+        event.preventDefault()
+        navigate('archive')
+        return
+      }
+
+      if (
+        pathOnly === '/dal-kereses' ||
+        pathOnly === '/dal-kereses/' ||
+        pathOnly === '/dalkereses' ||
+        pathOnly === '/dalkereses/' ||
+        hash === '#dal-kereses'
+      ) {
+        event.preventDefault()
+        navigate('search')
+        return
+      }
+
+      if ((pathOnly === '/' || pathOnly === '') && view !== 'home' && hash !== '#second-page') {
+        event.preventDefault()
+        navigate('home')
+      }
+    }
+
+    document.addEventListener('click', onDocumentClick)
+    return () => document.removeEventListener('click', onDocumentClick)
+  }, [navigate, view])
 
   async function startChannel(channelId) {
     setSelectedChannelId(channelId)
@@ -197,16 +248,14 @@ function App() {
   }
 
   return (
-    <main className="[--page-width:min(1448px,calc(100vw-40px))] [--player-height:52px] min-h-[100svh] overflow-x-hidden bg-white pb-[var(--player-height)] max-[700px]:[--page-width:calc(100vw-24px)] max-[700px]:[--player-height:86px]">
+    <main className="[--page-width:min(1448px,calc(100vw-40px))] [--player-height:52px] min-h-[100svh] overflow-x-hidden bg-white pb-[calc(var(--player-height)+env(safe-area-inset-bottom,0px))] max-[700px]:[--page-width:calc(100vw-24px)] max-[700px]:[--player-height:70px]">
       <audio ref={audioRef} preload="none" />
       {view === 'archive' ? (
         <SecondRadioPage onNavigateHome={() => navigate('home')} />
+      ) : view === 'search' ? (
+        <SongSearchPage onNavigateHome={() => navigate('home')} />
       ) : (
-        <LandingPage
-          playingChannelId={playingChannelId}
-          onNavigateArchive={() => navigate('archive')}
-          onToggleChannel={toggleChannel}
-        />
+        <LandingPage playingChannelId={playingChannelId} onToggleChannel={toggleChannel} />
       )}
       <PlayerBar
         channel={playerChannel}

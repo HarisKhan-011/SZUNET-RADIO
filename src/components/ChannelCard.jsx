@@ -2,12 +2,6 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { brandAssets } from '../data/channels'
 import { cx } from '../utils/cx'
 
-const cardHeightByIndex = {
-  1: 'h-[clamp(430px,38vw,545px)] max-[760px]:h-[min(68svh,450px)] max-[420px]:h-[min(66svh,410px)]',
-  3: 'h-[clamp(370px,32vw,470px)] max-[760px]:h-[min(62svh,390px)] max-[420px]:h-[min(60svh,352px)]',
-  4: 'h-[clamp(430px,37vw,540px)] max-[760px]:h-[min(66svh,438px)] max-[420px]:h-[min(64svh,400px)]',
-}
-
 function ChannelCard({ channel, index, introActive = false, isPlaying, onToggle }) {
   const isFeature = channel.size === 'feature'
   const prefersReducedMotion = useReducedMotion()
@@ -16,14 +10,15 @@ function ChannelCard({ channel, index, introActive = false, isPlaying, onToggle 
   return (
     <motion.article
       className={cx(
-        'relative min-w-0 snap-center overflow-hidden bg-[#111] shadow-[0_16px_32px_rgba(0,0,0,0.18)]',
-        '[--footer-height:27%] [--play-size:clamp(54px,6.2vw,64px)]',
-        'h-[clamp(398px,34vw,500px)] flex-[1_1_0]',
-        'max-[760px]:h-[min(66svh,430px)] max-[760px]:flex-[0_0_calc(100vw-24px)] max-[760px]:snap-center max-[760px]:snap-always max-[420px]:h-[min(64svh,390px)]',
+        'relative min-h-0 min-w-0 snap-center overflow-hidden bg-[#111] shadow-[0_16px_32px_rgba(0,0,0,0.18)]',
+        '[--footer-height:26%] [--play-size:clamp(48px,4.2vw,68px)]',
+        /* Desktop / tablet: fill strip height; prime slightly wider */
+        'min-[761px]:h-full min-[761px]:flex-1',
+        isFeature && 'min-[761px]:flex-[1.38]',
+        /* Mobile: one card width per “page”, full strip height */
+        'max-[760px]:h-full max-[760px]:max-h-full max-[760px]:w-[calc(100vw-24px)] max-[760px]:max-w-[calc(100vw-24px)] max-[760px]:flex-[0_0_calc(100vw-24px)] max-[760px]:snap-center max-[760px]:snap-always',
+        isFeature && 'max-[760px]:[--footer-height:25%] max-[760px]:[--play-size:clamp(54px,14vw,64px)]',
         isPlaying && 'outline-4 -outline-offset-4 outline-white',
-        cardHeightByIndex[index],
-        isFeature &&
-          '[--footer-height:24%] [--play-size:clamp(62px,7.2vw,74px)] h-[clamp(450px,39vw,575px)] flex-[1.34_1_0] max-[760px]:h-[min(70svh,470px)] max-[760px]:flex-[0_0_calc(100vw-24px)] max-[420px]:h-[min(68svh,420px)]',
       )}
       initial={
         prefersReducedMotion
@@ -60,11 +55,11 @@ function ChannelCard({ channel, index, introActive = false, isPlaying, onToggle 
         alt={`${channel.artist} - ${channel.track}`}
       />
 
-      <div className="absolute right-[clamp(9px,1.1vw,13px)] z-[2] grid min-w-0 gap-px bottom-[calc(var(--footer-height)_+_clamp(10px,1.4vw,15px))] left-[clamp(9px,1.1vw,13px)] uppercase text-white [text-shadow:0_2px_7px_rgba(0,0,0,0.8)]">
-        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(8px,0.9vw,11px)] font-black leading-none">
+      <div className="absolute inset-x-0 bottom-[calc(var(--footer-height)_+_clamp(10px,1.4vw,15px))] z-[2] flex min-w-0 max-w-full flex-col gap-px px-[clamp(9px,1.1vw,13px)] uppercase text-white [text-shadow:0_2px_7px_rgba(0,0,0,0.8)]">
+        <span className="block min-w-0 w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(8px,0.9vw,11px)] font-black leading-none">
           {channel.artist}
         </span>
-        <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(12px,1.25vw,16px)] font-[950] leading-[0.95]">
+        <strong className="block min-w-0 w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(12px,1.25vw,16px)] font-[950] leading-[0.95]">
           {channel.track}
         </strong>
       </div>

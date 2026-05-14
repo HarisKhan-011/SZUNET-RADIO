@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import likeIcon from '../assets/images/Group 41.png'
 import dislikeIcon from '../assets/images/Group 42.png'
@@ -34,7 +33,7 @@ function ChartLabel({ label }) {
       className="relative z-[2] grid place-items-center bg-[rgba(0,0,0,0.2)] shadow-[inset_-1px_0_0_rgba(255,255,255,0.2),inset_1px_0_0_rgba(0,0,0,0.12)]"
       aria-hidden="true"
     >
-      <span className="block rotate-180 [font-family:Arial,Helvetica,sans-serif] text-[clamp(9px,0.85vw,13px)] font-[950] leading-none tracking-[0.06em] text-white uppercase [text-shadow:0_2px_8px_rgba(0,0,0,0.28)] [writing-mode:vertical-rl] max-[420px]:text-[8px]">
+      <span className="block rotate-180 [font-family:Arial,Helvetica,sans-serif] text-[clamp(8px,0.85vw,13px)] font-[950] leading-none tracking-[0.06em] text-white uppercase [text-shadow:0_2px_8px_rgba(0,0,0,0.28)] [writing-mode:vertical-rl] max-[420px]:text-[7px]">
         {label}
       </span>
     </div>
@@ -65,32 +64,14 @@ function ReactionIcons({ trend }) {
 
 function MusicMeta({ artist, title }) {
   return (
-    <div className="grid min-w-0 gap-[2px] [font-family:Arial,Helvetica,sans-serif] leading-none text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.28)]">
-      <strong className="block w-fit max-w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(8px,0.78vw,12px)] font-[950] uppercase max-[620px]:text-[8px] max-[360px]:text-[7px]">
-        <span className="relative inline-block w-fit max-w-full overflow-hidden text-ellipsis whitespace-nowrap align-top">
-          <span className="relative z-[1]">{artist}</span>
-          <span className="absolute inset-x-0 top-2 z-0 h-[5px]  -translate-y-1/2 bg-[#050526]" aria-hidden="true" />
-        </span>
+    <div className="grid w-full min-w-0 max-w-full gap-[3px] [font-family:Arial,Helvetica,sans-serif] leading-tight text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.28)]">
+      <strong className="block min-w-0 w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(7px,0.78vw,11px)] font-[950] uppercase max-[360px]:text-[6.5px]">
+        {artist}
       </strong>
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(7px,0.68vw,10px)] font-extrabold max-[620px]:text-[7px] max-[360px]:text-[6px]">
+      <span className="block min-w-0 w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(6.5px,0.68vw,10px)] font-extrabold max-[360px]:text-[6px]">
         {title}
       </span>
     </div>
-  )
-}
-
-function RankingNumber({ rank }) {
-  const prefersReducedMotion = useReducedMotion()
-
-  return (
-    <motion.div
-      className="cursor-default justify-self-center self-center [font-family:Arial,Helvetica,sans-serif] text-[clamp(60px,7.35vw,110px)] font-[950] leading-[0.76] text-white [text-shadow:0_10px_22px_rgba(0,0,0,0.2),-2px_0_0_rgba(255,255,255,0.2)] max-[760px]:text-[42px] max-[620px]:text-[46px] max-[420px]:text-[40px] max-[360px]:text-[34px]"
-      aria-label={`Rank ${rank}`}
-      whileHover={prefersReducedMotion ? undefined : { scale: 1.08, y: -2 }}
-      transition={{ duration: 0.18, ease: 'easeOut' }}
-    >
-      {rank}
-    </motion.div>
   )
 }
 
@@ -100,16 +81,18 @@ function ChartCard({ card, rank, rowTone }) {
 
   return (
     <motion.article
-      className="grid min-w-0 cursor-pointer gap-1.5 [transform-origin:center] group"
+      className="flex w-full min-w-0 max-w-full cursor-pointer flex-col gap-1.5 [transform-origin:center] group"
       aria-label={`${rank}. ${card.artist} - ${card.title}`}
-      whileHover={prefersReducedMotion ? undefined : { y: -5, scale: 1.035 }}
+      whileHover={prefersReducedMotion ? undefined : { y: -4, scale: 1.02 }}
       transition={{ duration: 0.2, ease: 'easeOut' }}
     >
-      <div className="relative isolate aspect-square overflow-hidden border-2 border-[rgba(255,255,255,0.82)] bg-[rgba(8,8,51,0.18)] shadow-[0_10px_18px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.28)] transition-[box-shadow,filter] duration-200 group-hover:shadow-[0_14px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(255,255,255,0.2)]">
+      <MusicMeta artist={card.artist} title={card.title} />
+      <div className="relative isolate aspect-square w-full min-w-0 max-w-full overflow-hidden border-2 border-[rgba(255,255,255,0.82)] bg-[rgba(8,8,51,0.18)] shadow-[0_10px_18px_rgba(0,0,0,0.2),0_0_0_1px_rgba(0,0,0,0.08),inset_0_1px_0_rgba(255,255,255,0.28)] transition-[box-shadow,filter] duration-200 group-hover:shadow-[0_14px_24px_rgba(0,0,0,0.26),0_0_18px_rgba(255,255,255,0.2)]">
         <img
           className="block h-full w-full object-cover transition-transform duration-[220ms] motion-reduce:transition-none group-hover:scale-[1.045]"
           src={card.image}
-          alt={`${card.artist} - ${card.title}`}
+          alt=""
+          aria-hidden="true"
           style={{ objectPosition: card.imagePosition }}
         />
         <span
@@ -119,14 +102,13 @@ function ChartCard({ card, rank, rowTone }) {
         <ReactionIcons trend={card.trend} />
         <span
           className={cx(
-            'absolute left-[5px] top-[5px] z-[3] inline-grid min-h-[21px] min-w-[21px] place-items-center rounded-full [font-family:Arial,Helvetica,sans-serif] text-[9px] font-[950] leading-none text-white shadow-[0_4px_10px_rgba(0,0,0,0.24)] max-[620px]:min-h-[20px] max-[620px]:min-w-[20px] max-[620px]:text-[8px] max-[360px]:min-h-[18px] max-[360px]:min-w-[18px] max-[360px]:text-[7px]',
+            'absolute left-[4px] top-[4px] z-[3] inline-grid min-h-[18px] min-w-[18px] place-items-center rounded-full [font-family:Arial,Helvetica,sans-serif] text-[8px] font-[950] leading-none text-white shadow-[0_4px_10px_rgba(0,0,0,0.24)] max-[360px]:min-h-[16px] max-[360px]:min-w-[16px] max-[360px]:text-[7px]',
             tone.chip,
           )}
         >
           #{rank}
         </span>
       </div>
-      <MusicMeta artist={card.artist} title={card.title} />
     </motion.article>
   )
 }
@@ -134,18 +116,17 @@ function ChartCard({ card, rank, rowTone }) {
 function ChartRow({ row, index }) {
   const prefersReducedMotion = useReducedMotion()
   const tone = toneStyles[row.tone]
-  const visibleCards = row.cards.slice(0, 4)
 
   return (
     <motion.section
       className={cx(
-        'relative isolate grid min-h-[clamp(128px,12.4vw,178px)] grid-cols-[clamp(38px,4.1vw,58px)_1fr] overflow-hidden text-white shadow-[0_18px_34px_rgba(8,8,51,0.14),inset_0_1px_0_rgba(255,255,255,0.24)] max-[760px]:min-h-[138px] max-[620px]:min-h-[128px] max-[620px]:grid-cols-[36px_1fr] max-[360px]:min-h-[116px] max-[360px]:grid-cols-[30px_1fr]',
+        'relative isolate grid min-h-[min(168px,28vw)] grid-cols-[clamp(30px,4vw,52px)_1fr] overflow-hidden text-white shadow-[0_18px_34px_rgba(8,8,51,0.14),inset_0_1px_0_rgba(255,255,255,0.24)] max-[620px]:min-h-[156px] max-[420px]:min-h-[148px] max-[360px]:grid-cols-[26px_1fr]',
         tone.gradient,
       )}
       aria-labelledby={`${row.id}-chart-heading`}
       initial={prefersReducedMotion ? false : { opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.36 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.42, ease: 'easeOut', delay: index * 0.045 }}
     >
       <h2 className="sr-only" id={`${row.id}-chart-heading`}>
@@ -159,7 +140,7 @@ function ChartRow({ row, index }) {
         transition={{ duration: 8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }}
       />
       <span
-        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_18%_28%,rgba(255,255,255,0.82),transparent_7%),repeating-linear-gradient(90deg,rgba(255,255,255,0.22)_0_1px,transparent_1px_34px)] opacity-[0.18] mix-blend-screen"
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_18%_28%,rgba(255,255,255,0.82),transparent_7%),repeating-linear-gradient(90deg,rgba(255,255,255,0.22)_0_1px,transparent_1px_17px)] opacity-[0.18] mix-blend-screen"
         aria-hidden="true"
       />
       <span
@@ -168,17 +149,19 @@ function ChartRow({ row, index }) {
       />
       <ChartLabel label={row.label} />
 
-      <div className="relative z-[2] min-w-0 overflow-hidden max-[620px]:overflow-x-auto max-[620px]:overscroll-x-contain max-[620px]:scroll-smooth max-[620px]:[scroll-padding-inline:12px] max-[620px]:[scroll-snap-type:x_proximity] max-[620px]:[scrollbar-width:none] max-[620px]:[&::-webkit-scrollbar]:hidden">
-        <div className="grid h-full grid-cols-[minmax(74px,1fr)_clamp(34px,5vw,78px)_minmax(74px,1fr)_clamp(34px,5vw,78px)_minmax(74px,1fr)_clamp(34px,5vw,78px)_minmax(74px,1fr)] items-center gap-[clamp(8px,1.08vw,18px)] px-[clamp(13px,1.9vw,30px)] py-[clamp(12px,1.45vw,20px)] max-[760px]:grid-cols-[minmax(48px,1fr)_28px_minmax(48px,1fr)_28px_minmax(48px,1fr)_28px_minmax(48px,1fr)] max-[760px]:gap-2 max-[760px]:px-2.5 max-[620px]:inline-grid max-[620px]:min-w-max max-[620px]:grid-cols-[118px_40px_118px_40px_118px_40px_118px] max-[620px]:gap-3 max-[620px]:px-3 max-[620px]:py-3 max-[420px]:grid-cols-[104px_34px_104px_34px_104px_34px_104px] max-[420px]:gap-2.5 max-[360px]:grid-cols-[96px_30px_96px_30px_96px_30px_96px] max-[360px]:gap-2">
-          {visibleCards.map((card, cardIndex) => (
-            <Fragment key={`${row.id}-${card.id}-${cardIndex}`}>
-              <div className="min-w-0 max-[620px]:snap-start">
-                <ChartCard card={card} rank={cardIndex + 1} rowTone={row.tone} />
-              </div>
-              {cardIndex < visibleCards.length - 1 ? (
-                <RankingNumber rank={cardIndex + 1} />
-              ) : null}
-            </Fragment>
+      <div
+        className="relative z-[2] min-w-0 touch-pan-x overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [scroll-snap-type:x_mandatory] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+        aria-label={`${row.label}: legfeljebb 30 dal, vízszintesen görgethető`}
+      >
+        <div className="flex w-max flex-nowrap items-stretch gap-[clamp(8px,1.2vw,14px)] py-[clamp(10px,1.2vw,16px)] pl-[clamp(8px,1.4vw,18px)] pr-[clamp(12px,2vw,28px)]">
+          {row.cards.map((card, cardIndex) => (
+            <div
+              className="w-[clamp(76px,16vw,120px)] shrink-0 snap-start max-[420px]:w-[clamp(72px,26vw,100px)]"
+              key={`${row.id}-${card.id}`}
+            >
+              <ChartCard card={card} rank={cardIndex + 1} rowTone={row.tone} />
+            </div>
           ))}
         </div>
       </div>
@@ -188,8 +171,8 @@ function ChartRow({ row, index }) {
 
 function RadioChartsSection() {
   return (
-    <section className="bg-white pb-[clamp(28px,4vw,58px)]" aria-label="SZUNET RADIO charts">
-      <div className="mx-auto grid w-[var(--page-width)] gap-[8px] overflow-hidden max-[620px]:w-[calc(100vw-20px)]">
+    <section className="bg-white pb-[clamp(28px,4vw,58px)] pt-1" aria-label="SZUNET RADIO charts">
+      <div className="mx-auto grid w-[min(100%,var(--page-width))] gap-[8px] overflow-hidden max-[620px]:w-[min(calc(100vw-16px),var(--page-width))]">
         {radioChartRows.map((row, index) => (
           <ChartRow row={row} index={index} key={row.id} />
         ))}

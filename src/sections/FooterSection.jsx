@@ -35,12 +35,12 @@ function FooterSection() {
         <div className="grid grid-cols-[minmax(74px,140px)_1fr_auto] items-end gap-[clamp(14px,3vw,48px)] [font-family:Arial,Helvetica,sans-serif] text-white max-[700px]:grid-cols-[auto_1fr] max-[700px]:items-center">
           <img className="h-auto w-[clamp(74px,8vw,118px)]" src={stationLogo} alt="SZUNET Radio" />
 
-          <p className="m-0 max-w-[560px] text-[clamp(7px,0.68vw,10px)] font-medium leading-[1.35] opacity-90">
+          <p className="m-0 min-w-0 max-w-full text-pretty text-[clamp(7px,0.68vw,10px)] font-medium leading-[1.35] opacity-90 max-[700px]:text-[clamp(8px,2.4vw,10px)]">
             Készítette: McG012. Szép volt minden zene/tartalom itt csak
             megjelenítésre. Minden jog fenntartva.
           </p>
 
-          <p className="m-0 max-w-[560px] justify-self-end text-right text-[clamp(7px,0.68vw,10px)] font-medium leading-[1.35] opacity-90 max-[700px]:col-span-2 max-[700px]:justify-self-start max-[700px]:text-left">
+          <p className="m-0 min-w-0 max-w-full justify-self-end text-pretty text-right text-[clamp(7px,0.68vw,10px)] font-medium leading-[1.35] opacity-90 max-[700px]:col-span-2 max-[700px]:justify-self-start max-[700px]:text-left max-[700px]:text-[clamp(8px,2.4vw,10px)]">
             Copyright © Szünet Rádió 2026 - Minden jog fenntartva.
           </p>
         </div>

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { scheduleItems } from '../data/schedule'
 import { cx } from '../utils/cx'
+import ScheduleHeroRocket from '../components/ScheduleHeroRocket'
 
 const DEFAULT_ACTIVE_ITEM_ID = '1745'
 const TICK_COUNT = 96
@@ -31,7 +32,7 @@ function ScheduleTrackCard({ item, index, isActive, onSelect, anchor }) {
     >
       <motion.button
         className={cx(
-          'group relative grid w-full min-w-0 cursor-pointer grid-rows-[auto_auto_auto] gap-1 rounded-lg border border-transparent bg-transparent p-[3px] text-left text-[#050526] transition-[border-color,box-shadow,background] duration-[160ms] motion-reduce:transition-none',
+          'group relative grid w-full min-w-0 cursor-pointer grid-rows-[auto_auto_auto] justify-items-stretch gap-1 rounded-lg border border-transparent bg-transparent p-[3px] text-left text-[#050526] transition-[border-color,box-shadow,background] duration-[160ms] motion-reduce:transition-none',
           'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008eff]',
           'hover:border-[rgba(0,142,255,0.44)] hover:bg-[rgba(255,255,255,0.38)] hover:shadow-[0_8px_16px_rgba(7,7,56,0.11)]',
           isActive &&
@@ -44,11 +45,11 @@ function ScheduleTrackCard({ item, index, isActive, onSelect, anchor }) {
         whileHover={prefersReducedMotion ? undefined : { y: -3 }}
         whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
       >
-        <div className="grid min-h-[18px] min-w-0 gap-px leading-none">
-          <span className="overflow-hidden text-ellipsis whitespace-nowrap [font-family:Arial,Helvetica,sans-serif] text-[clamp(6px,0.52vw,8px)] font-extrabold text-[rgba(5,5,38,0.82)]">
+        <div className="grid min-h-[18px] w-full min-w-0 max-w-full gap-px leading-none">
+          <span className="block min-w-0 w-full overflow-hidden text-ellipsis whitespace-nowrap [font-family:Arial,Helvetica,sans-serif] text-[clamp(6px,0.52vw,8px)] font-extrabold text-[rgba(5,5,38,0.82)]">
             {item.artist}
           </span>
-          <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(6px,0.54vw,8px)] font-[950] text-[#050526]">
+          <strong className="block min-w-0 w-full overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(6px,0.54vw,8px)] font-[950] text-[#050526]">
             {item.title}
           </strong>
         </div>
@@ -225,8 +226,13 @@ function ScheduleSection({ variant = 'default' }) {
   return (
     <section
       className={cx('bg-transparent pt-2 max-[560px]:pt-[7px]', isHeroVariant && 'pt-0 max-[560px]:pt-0')}
-      aria-label="Upcoming songs timeline"
+      aria-label={isHeroVariant ? 'Közelgő műsor' : 'Nemrég hallottad — közelgő műsor'}
     >
+      {!isHeroVariant ? (
+        <h2 className="mx-auto mb-2 w-[var(--page-width)] max-w-[min(100%,var(--page-width))] px-1 [font-family:Arial,Helvetica,sans-serif] text-[clamp(11px,1.05vw,14px)] font-black uppercase tracking-[0.12em] text-[#070738] max-[560px]:mb-1.5 max-[560px]:w-[calc(100vw-20px)] max-[560px]:px-2">
+          Nemrég hallottad
+        </h2>
+      ) : null}
       <div
         className={cx(
           'relative isolate mx-auto w-[var(--page-width)] overflow-hidden rounded-[14px] border border-[rgba(7,7,56,0.1)] bg-[linear-gradient(180deg,rgba(255,255,255,0.74),rgba(230,229,232,0.96)),#e8e6e7] shadow-[0_10px_26px_rgba(7,7,56,0.1),inset_0_1px_0_rgba(255,255,255,0.76)] max-[560px]:w-[calc(100vw-20px)] max-[560px]:rounded-xl',
@@ -238,7 +244,8 @@ function ScheduleSection({ variant = 'default' }) {
           className="pointer-events-none absolute inset-0 -z-[1] bg-[linear-gradient(90deg,rgba(255,255,255,0.32),transparent_13%,transparent_87%,rgba(255,255,255,0.28)),repeating-linear-gradient(90deg,rgba(7,7,56,0.035)_0_1px,transparent_1px_84px)]"
           aria-hidden="true"
         />
-        <div className="relative z-[1] overflow-x-auto overscroll-x-contain scroll-smooth px-2.5 pb-[7px] pt-2 [scroll-padding-inline:10px] [scrollbar-width:none] [scroll-snap-type:x_proximity] [&::-webkit-scrollbar]:hidden max-[560px]:px-2 max-[560px]:py-[7px]">
+        {isHeroVariant ? <ScheduleHeroRocket /> : null}
+        <div className="relative z-[2] overflow-x-auto overscroll-x-contain scroll-smooth px-2.5 pb-[7px] pt-2 [scroll-padding-inline:10px] [scrollbar-width:none] [scroll-snap-type:x_proximity] [&::-webkit-scrollbar]:hidden max-[560px]:px-2 max-[560px]:py-[7px]">
           <div className="min-w-[740px] max-[900px]:min-w-[720px] max-[560px]:min-w-[660px] max-[420px]:min-w-[620px]">
             <div className="grid w-full grid-cols-[repeat(8,minmax(72px,1fr))] items-end gap-x-0 max-[560px]:grid-cols-[repeat(8,72px)] max-[420px]:grid-cols-[repeat(8,68px)]">
               {scheduleItems.map((item, index) => (

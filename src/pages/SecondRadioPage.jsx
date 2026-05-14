@@ -1,8 +1,7 @@
 import { useMemo, useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { brandAssets } from '../data/channels'
 import redBackground from '../assets/images/Rectangle 19.png'
-import rocketAsset from '../assets/images/Layer_3.png'
 import ScheduleSection from '../sections/ScheduleSection'
 import RadioChartsSection from '../sections/RadioChartsSection'
 import FooterSection from '../sections/FooterSection'
@@ -38,7 +37,7 @@ function RadioHeader({ onNavigateHome }) {
       <button
         className="block w-[clamp(82px,8vw,126px)] cursor-pointer border-0 bg-transparent p-0 max-[700px]:justify-self-start"
         type="button"
-        aria-label="SZUNET RADIO home"
+        aria-label="Vissza a kezdőlapra — lejátszás folytatódik"
         onClick={onNavigateHome}
       >
         <img className="block h-auto w-full" src={brandAssets.stationLogo} alt="SZUNET RADIO" />
@@ -148,11 +147,14 @@ function CalendarWidget() {
           cell.day ? (
             <button
               className={cx(
-                'grid aspect-square w-full cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0 text-[8px] font-extrabold text-[#20203b] transition-[background,color,transform] duration-[140ms] hover:scale-[1.08] hover:bg-[rgba(255,17,17,0.12)] hover:text-[#ff1111] focus-visible:scale-[1.08] focus-visible:bg-[rgba(255,17,17,0.12)] focus-visible:text-[#ff1111] focus-visible:outline-none',
-                selectedDay === cell.day && 'bg-[#ff1111] text-white shadow-[0_5px_12px_rgba(255,17,17,0.25)] hover:bg-[#ff1111] hover:text-white',
+                'grid aspect-square w-full cursor-pointer place-items-center rounded-full border-0 p-0 text-[8px] font-extrabold transition-[background,color,transform,box-shadow] duration-[140ms]',
+                selectedDay === cell.day
+                  ? 'z-[1] bg-[#ff1111] text-white shadow-none hover:scale-100 hover:bg-[#e01010] hover:text-white focus-visible:scale-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#080833]'
+                  : 'bg-transparent text-[#20203b] hover:scale-[1.08] hover:bg-[rgba(255,17,17,0.12)] hover:text-[#ff1111] focus-visible:scale-[1.08] focus-visible:bg-[rgba(255,17,17,0.12)] focus-visible:text-[#ff1111] focus-visible:outline-none',
               )}
               type="button"
               aria-label={`${month.label} ${cell.day}, ${month.year}`}
+              aria-current={selectedDay === cell.day ? 'date' : undefined}
               aria-pressed={selectedDay === cell.day}
               key={cell.id}
               onClick={() => setSelectedDay(cell.day)}
@@ -192,56 +194,6 @@ function TimeWidget() {
         <span className="absolute right-0 h-3 w-3 rotate-[225deg] border-l-2 border-t-2 border-white" />
       </span>
     </motion.div>
-  )
-}
-
-function RocketIllustration() {
-  const prefersReducedMotion = useReducedMotion()
-
-  return (
-    <div
-      className="pointer-events-none absolute left-[74%] top-[calc(clamp(400px,46vw,840px)-155px)] z-[9] h-[clamp(220px,18vw,260px)] w-[clamp(96px,8vw,124px)] -translate-x-1/2 max-[980px]:left-[75%] max-[980px]:top-[450px] max-[980px]:h-[238px] max-[980px]:w-[108px] max-[700px]:left-[75%] max-[700px]:top-[570px] max-[700px]:h-[202px] max-[700px]:w-[88px] max-[460px]:top-[536px] max-[420px]:h-[186px] max-[420px]:w-[78px]"
-      aria-hidden="true"
-    >
-      <span className="absolute left-1/2 bottom-0 z-[1] h-[clamp(196px,17vw,242px)] w-[clamp(4px,0.42vw,6px)] -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,rgba(92,245,223,0.92),rgba(92,245,223,0.78)_48%,rgba(92,245,223,0.64)_72%,rgba(92,245,223,0.16))] shadow-[0_0_10px_rgba(92,245,223,0.34)] max-[700px]:h-[168px] max-[700px]:w-[4px] max-[420px]:h-[152px]" />
-      <motion.img
-        className="absolute left-1/2 bottom-[142px] z-[4] block h-auto w-[clamp(52px,4.2vw,64px)] max-w-none -translate-x-1/2 drop-shadow-[0_8px_10px_rgba(7,7,56,0.18)] max-[980px]:bottom-[136px] max-[980px]:w-[56px] max-[700px]:bottom-[114px] max-[700px]:w-[44px] max-[420px]:bottom-[104px] max-[420px]:w-[40px]"
-        src={rocketAsset}
-        alt=""
-        animate={
-          prefersReducedMotion ? undefined : { y: [-2, 3, -2], rotate: [-0.5, 0.5, -0.5] }
-        }
-        transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      <motion.div
-        className="absolute left-1/2 bottom-[30px] z-[2] h-[clamp(46px,4.4vw,58px)] w-[clamp(112px,11vw,164px)] -translate-x-1/2 origin-bottom max-[700px]:bottom-[26px] max-[700px]:h-[44px] max-[700px]:w-[118px] max-[420px]:bottom-[24px] max-[420px]:h-[38px] max-[420px]:w-[104px]"
-        aria-hidden="true"
-        initial={false}
-        animate={prefersReducedMotion ? undefined : { scaleX: [0.995, 1.01, 0.995] }}
-        transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span className="absolute left-1/2 bottom-0 h-[42%] w-[72%] -translate-x-1/2 rounded-full bg-[#5cf5df] opacity-95 shadow-[0_0_14px_rgba(92,245,223,0.28)]" />
-        <span className="absolute left-[9%] bottom-[5%] h-[36%] w-[26%] rounded-full bg-[#5cf5df]" />
-        <span className="absolute left-[24%] bottom-[18%] h-[45%] w-[30%] rounded-full bg-[#5cf5df]" />
-        <span className="absolute left-[43%] bottom-[14%] h-[52%] w-[32%] rounded-full bg-[#5cf5df]" />
-        <span className="absolute right-[13%] bottom-[8%] h-[38%] w-[27%] rounded-full bg-[#5cf5df]" />
-        <span className="absolute left-[2%] bottom-0 h-[24%] w-[24%] rounded-full bg-[#5cf5df] opacity-90" />
-        <span className="absolute right-[2%] bottom-0 h-[24%] w-[24%] rounded-full bg-[#5cf5df] opacity-90" />
-      </motion.div>
-      <motion.div
-        className="absolute left-1/2 bottom-[-8px] z-[1] h-[clamp(30px,3.2vw,42px)] w-[clamp(76px,7.5vw,116px)] -translate-x-1/2 origin-bottom max-[700px]:bottom-[-6px] max-[700px]:h-[30px] max-[700px]:w-[82px] max-[420px]:w-[74px]"
-        aria-hidden="true"
-        initial={false}
-        animate={prefersReducedMotion ? undefined : { scaleX: [1, 1.035, 1] }}
-        transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span className="absolute inset-x-[18%] bottom-0 h-[48%] rounded-full bg-[#5cf5df] opacity-75" />
-        <span className="absolute left-[8%] bottom-[10%] h-[54%] w-[34%] rounded-full bg-[#5cf5df] opacity-64" />
-        <span className="absolute right-[8%] bottom-[10%] h-[54%] w-[34%] rounded-full bg-[#5cf5df] opacity-64" />
-        <span className="absolute left-[36%] bottom-[22%] h-[62%] w-[30%] rounded-full bg-[#5cf5df] opacity-72" />
-      </motion.div>
-    </div>
   )
 }
 
@@ -292,7 +244,7 @@ function DecorativeElements() {
 
 function ScheduleTimelineSection() {
   return (
-    <div className="relative z-[4] overflow-visible border-b-[4px] border-[#5cf5df] bg-white pb-0 pt-[clamp(10px,1.1vw,16px)] [--launch-x:70.15%] max-[700px]:overflow-hidden">
+    <div className="relative isolate z-[20] w-full overflow-x-clip border-b-[4px] border-[#5cf5df] bg-white pb-0 pt-[clamp(10px,1.1vw,16px)] shadow-[0_-10px_40px_rgba(0,0,0,0.06)] [--launch-x:70.15%] max-[700px]:overflow-hidden">
       <ScheduleSection variant="hero" />
     </div>
   )
@@ -353,7 +305,6 @@ function SecondRadioPage({ onNavigateHome }) {
       <div className="relative z-[1] overflow-visible">
         <HeroRadioSection onNavigateHome={onNavigateHome} />
         <ScheduleTimelineSection />
-        <RocketIllustration />
       </div>
       <ChartsSection />
       <RadioChartsSection />

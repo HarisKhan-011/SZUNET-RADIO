@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/second-page",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/second-page/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dal-kereses",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dal-kereses/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dalkereses",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dalkereses/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

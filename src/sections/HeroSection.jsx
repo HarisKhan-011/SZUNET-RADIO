@@ -4,6 +4,15 @@ import brandLogo from '../assets/images/Group 2.png'
 import headline from '../assets/images/KIMAXOLJUK A NAPODAT!.png'
 import redRibbon from '../assets/images/Rectangle 19.png'
 
+function SearchGlyph({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6.75" stroke="currentColor" strokeWidth="2.25" />
+      <path d="M16.25 16.25 20 20" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 function HeroSection({ channels, playingChannelId, onToggleChannel }) {
   const channelStripRef = useRef(null)
   const [introComplete, setIntroComplete] = useState(false)
@@ -53,13 +62,26 @@ function HeroSection({ channels, playingChannelId, onToggleChannel }) {
             alt="SZUNET Radio"
           />
         </button>
-        <a
-          className="mt-1 text-[clamp(13px,1.1vw,18px)] font-extrabold leading-none text-[#020202] no-underline underline-offset-2 transition-opacity duration-200 hover:opacity-80 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#080833] max-[420px]:text-[12px]"
-          href="/dal-kereses"
-          aria-label="Dal keresés — lejátszás folytatódik"
+        <nav
+          className="mt-1 flex max-w-[min(100%,calc(100vw-140px))] flex-wrap items-center justify-end gap-2 sm:gap-2.5"
+          aria-label="Gyorslinkek"
         >
-          @ dalkereses
-        </a>
+          <a
+            className="inline-flex items-center rounded-md border-2 border-[#080833] bg-white/90 px-[0.55em] py-[0.38em] [font-family:Arial,Helvetica,sans-serif] text-[clamp(10px,0.95vw,13px)] font-[950] normal-case leading-none tracking-[0.02em] text-[#080833] no-underline shadow-[0_2px_8px_rgba(8,8,51,0.08)] backdrop-blur-[2px] transition-[transform,background] duration-200 hover:-translate-y-px hover:bg-white focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#080833] max-[420px]:px-2 max-[420px]:text-[9px]"
+            href="/second-page"
+            aria-label="Second page — műsor és archívum, lejátszás folytatódik"
+          >
+            second-page
+          </a>
+          <a
+            className="inline-flex items-center gap-[0.4em] rounded-md bg-[#ff1111] px-[0.65em] py-[0.42em] [font-family:Arial,Helvetica,sans-serif] text-[clamp(12px,1.05vw,17px)] font-[950] lowercase leading-none tracking-[0.02em] text-[#080833] no-underline shadow-[0_2px_12px_rgba(8,8,51,0.12)] ring-2 ring-white/75 transition-[transform,filter] duration-200 hover:-translate-y-px hover:brightness-[1.03] focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#080833] max-[420px]:text-[11px]"
+            href="/dal-kereses"
+            aria-label="Dal keresés — lejátszás folytatódik"
+          >
+            <SearchGlyph className="h-[1.05em] w-[1.05em] shrink-0 translate-y-px text-[#080833]" />
+            <span>dalkereses</span>
+          </a>
+        </nav>
       </header>
 
       <img

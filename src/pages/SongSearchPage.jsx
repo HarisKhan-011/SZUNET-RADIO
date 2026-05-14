@@ -18,45 +18,39 @@ function SearchIcon({ className }) {
 
 function SongSearchBar({ value, onChange, inputId }) {
   return (
-    <div
-      className="relative isolate flex min-h-[52px] w-full max-w-[min(100%,640px)] items-stretch overflow-hidden rounded-sm shadow-[0_10px_28px_rgba(8,8,51,0.12)] [font-family:Arial,Helvetica,sans-serif]"
-      style={{
-        background: 'linear-gradient(118deg, #ffffff 0%, #ffffff 56%, #ff1111 56%, #ff1111 100%)',
-      }}
+    <label
+      className="group relative mx-auto block w-full max-w-[min(100%,560px)] cursor-text rounded-xl border border-[rgba(8,8,51,0.12)] bg-white shadow-[0_2px_14px_rgba(8,8,51,0.06)] transition-[border-color,box-shadow] duration-200 [font-family:Arial,Helvetica,sans-serif] focus-within:border-[#008eff] focus-within:shadow-[0_0_0_3px_rgba(0,142,255,0.18),0_4px_20px_rgba(8,8,51,0.08)]"
+      htmlFor={inputId}
     >
-      <label
-        className="flex shrink-0 cursor-text items-center justify-center self-center px-[10px] py-2 max-[420px]:px-2"
-        htmlFor={inputId}
-      >
-        <span className="grid h-[clamp(36px,9vw,44px)] w-[clamp(36px,9vw,44px)] shrink-0 place-items-center border-2 border-[#7c3aed] bg-white text-[#0a0a0a] shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
-          <SearchIcon className="h-[18px] w-[18px] max-[420px]:h-4 max-[420px]:w-4" />
-        </span>
-      </label>
-      <div className="flex min-w-0 flex-1 items-center gap-2 pr-3 pl-1 max-[420px]:gap-1.5 max-[420px]:pr-2">
-        <span className="shrink-0 text-[clamp(11px,2.6vw,14px)] font-[950] uppercase tracking-[0.03em] text-[#111118]">
-          dalkeresés
+      <span className="sr-only">Keresés előadóra vagy dalra</span>
+      <div className="flex min-h-[52px] items-center gap-3 px-3 py-2.5 sm:min-h-[56px] sm:gap-3.5 sm:px-4">
+        <span
+          className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[rgba(8,8,51,0.06)] text-[#080833] ring-1 ring-[rgba(8,8,51,0.08)] transition-colors duration-200 group-focus-within:bg-[rgba(0,142,255,0.08)] group-focus-within:ring-[rgba(0,142,255,0.35)] sm:h-11 sm:w-11"
+          aria-hidden="true"
+        >
+          <SearchIcon className="h-[19px] w-[19px] opacity-[0.72] sm:h-5 sm:w-5" />
         </span>
         <input
-          className="min-w-0 flex-1 border-0 bg-transparent py-2 text-[clamp(13px,3.2vw,16px)] font-bold text-[#111118] outline-none ring-0 placeholder:font-semibold placeholder:text-[rgba(17,17,24,0.42)] focus:ring-0 max-[420px]:text-[13px]"
+          className="min-w-0 flex-1 border-0 bg-transparent py-1 text-[16px] font-semibold leading-snug text-[#080833] outline-none ring-0 placeholder:font-normal placeholder:text-[rgba(8,8,51,0.42)] focus:ring-0 sm:text-[17px]"
           id={inputId}
           type="search"
           name="song-search"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Előadó vagy dal…"
+          placeholder="Előadó vagy dal címe…"
           autoComplete="off"
           spellCheck="false"
           enterKeyHint="search"
-          aria-label="Keresés előadóra vagy dalra"
         />
       </div>
-    </div>
+    </label>
   )
 }
 
 function SongSearchPage({ onNavigateHome }) {
   const [query, setQuery] = useState('')
   const inputId = 'song-search-field'
+  const total = scheduleItems.length
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -67,10 +61,12 @@ function SongSearchPage({ onNavigateHome }) {
     )
   }, [query])
 
+  const hasFilter = query.trim().length > 0
+
   return (
-    <div className="min-h-[calc(100svh-var(--player-height))] bg-[#f6f6f9] text-[#11112a] [--page-width:min(1448px,calc(100vw-40px))] max-[700px]:[--page-width:calc(100vw-24px)]">
-      <header className="border-b border-[rgba(8,8,51,0.08)] bg-white/90 shadow-[0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-[6px]">
-        <div className="mx-auto flex w-[var(--page-width)] items-center px-[clamp(12px,1.5vw,18px)] py-[clamp(14px,2vw,22px)]">
+    <div className="min-h-[calc(100svh-var(--player-height))] bg-[#f0f1f6] text-[#11112a] [--page-width:min(1448px,calc(100vw-40px))] max-[700px]:[--page-width:calc(100vw-24px)]">
+      <header className="border-b border-[rgba(8,8,51,0.08)] bg-white shadow-[0_1px_0_rgba(255,255,255,0.9)]">
+        <div className="mx-auto flex w-[var(--page-width)] items-center px-[clamp(12px,1.5vw,18px)] py-[clamp(14px,2vw,20px)]">
           <button
             className="block w-[clamp(96px,10vw,132px)] shrink-0 cursor-pointer border-0 bg-transparent p-0 transition-opacity duration-200 hover:opacity-85 focus-visible:rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#080833]"
             type="button"
@@ -82,44 +78,64 @@ function SongSearchPage({ onNavigateHome }) {
         </div>
       </header>
 
-      <div className="mx-auto w-[var(--page-width)] px-[clamp(12px,1.5vw,18px)] pb-[clamp(28px,4vw,48px)] pt-[clamp(20px,3vw,36px)]">
-        <h1 className="m-0 mb-[clamp(14px,2vw,22px)] text-[clamp(22px,3.2vw,34px)] font-[950] uppercase tracking-[0.06em] text-[#080833]">
-          Dal keresés
-        </h1>
+      <div className="mx-auto w-[var(--page-width)] px-[clamp(12px,1.5vw,18px)] pb-[clamp(32px,5vw,56px)] pt-[clamp(24px,4vw,40px)]">
+        <header className="mb-6 max-w-[40rem] sm:mb-8">
+          <h1 className="m-0 text-[clamp(24px,4vw,36px)] font-[950] uppercase leading-[1.05] tracking-[0.04em] text-[#080833]">
+            Dal keresés
+          </h1>
+          <p className="mt-2.5 text-[15px] leading-relaxed text-[rgba(8,8,51,0.62)] sm:text-[16px]">
+            Keress a mai műsorban — gépelés közben frissül a lista. Összesen{' '}
+            <span className="font-semibold text-[#080833]">{total}</span> műsorpont.
+          </p>
+        </header>
+
         <SongSearchBar value={query} onChange={setQuery} inputId={inputId} />
 
-        <p className="mt-4 mb-3 text-[13px] font-semibold text-[rgba(8,8,51,0.55)]">
-          {query.trim()
-            ? `${results.length} találat a műsorban`
-            : 'Összes műsor elem — szűréshez írj a mezőbe'}
+        <p
+          className="mx-auto mt-4 max-w-[min(100%,560px)] text-[13px] leading-snug text-[rgba(8,8,51,0.52)] sm:mt-5 sm:text-[14px]"
+          role="status"
+          aria-live="polite"
+        >
+          {hasFilter
+            ? results.length === 1
+              ? '1 találat — töröld a mezőt az összes szám megjelenítéséhez.'
+              : `${results.length} találat — töröld a mezőt az összes szám megjelenítéséhez.`
+            : 'Kezdj el gépelni a szűréshez, vagy görgess le az összes műsorponthoz.'}
         </p>
 
-        <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="m-0 mt-6 grid list-none gap-3 p-0 sm:mt-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {results.map((item) => (
             <li
-              className="flex min-w-0 gap-3 rounded-lg border border-[rgba(8,8,51,0.08)] bg-white p-3 shadow-[0_6px_16px_rgba(8,8,51,0.06)]"
+              className="flex min-w-0 gap-3.5 rounded-xl border border-[rgba(8,8,51,0.07)] bg-white p-3.5 shadow-[0_4px_18px_rgba(8,8,51,0.05)] transition-[box-shadow,transform] duration-200 hover:shadow-[0_8px_24px_rgba(8,8,51,0.08)] sm:gap-4 sm:p-4"
               key={item.id}
             >
               <img
-                className="h-14 w-14 shrink-0 rounded object-cover"
+                className="h-[60px] w-[60px] shrink-0 rounded-lg object-cover ring-1 ring-[rgba(8,8,51,0.06)] sm:h-[64px] sm:w-[64px]"
                 src={item.cover}
                 alt=""
               />
-              <div className="min-w-0 flex-1">
-                <p className="m-0 truncate text-[11px] font-extrabold text-[rgba(8,8,51,0.55)]">
+              <div className="min-w-0 flex-1 py-0.5">
+                <p className="m-0 truncate text-[12px] font-semibold uppercase tracking-[0.04em] text-[rgba(8,8,51,0.5)]">
                   {item.artist}
                 </p>
-                <p className="m-0 truncate text-[13px] font-[950] text-[#080833]">{item.title}</p>
-                <p className="m-0 mt-1 text-[11px] font-bold text-[#ff1111]">{item.time}</p>
+                <p className="m-0 mt-0.5 truncate text-[15px] font-[950] leading-tight text-[#080833] sm:text-[16px]">
+                  {item.title}
+                </p>
+                <p className="m-0 mt-2 inline-flex items-center rounded-md bg-[rgba(255,17,17,0.08)] px-2 py-0.5 text-[12px] font-bold tabular-nums text-[#d60a0a]">
+                  {item.time}
+                </p>
               </div>
             </li>
           ))}
         </ul>
 
         {results.length === 0 ? (
-          <p className="mt-6 text-center text-[15px] font-semibold text-[rgba(8,8,51,0.5)]">
-            Nincs találat erre a kifejezésre.
-          </p>
+          <div className="mx-auto mt-10 max-w-md rounded-xl border border-dashed border-[rgba(8,8,51,0.18)] bg-white/80 px-6 py-10 text-center">
+            <p className="m-0 text-[16px] font-semibold text-[#080833]">Nincs találat</p>
+            <p className="m-0 mt-2 text-[14px] leading-relaxed text-[rgba(8,8,51,0.55)]">
+              Próbálj másik kifejezést, vagy töröld a keresőmezőt az összes műsor visszaállításához.
+            </p>
+          </div>
         ) : null}
       </div>
     </div>

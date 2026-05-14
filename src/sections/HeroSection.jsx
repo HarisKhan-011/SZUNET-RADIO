@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ChannelCard from '../components/ChannelCard'
 import brandLogo from '../assets/images/Group 2.png'
 import headline from '../assets/images/KIMAXOLJUK A NAPODAT!.png'
@@ -6,14 +6,22 @@ import redRibbon from '../assets/images/Rectangle 19.png'
 
 function HeroSection({ channels, playingChannelId, onNavigateArchive, onToggleChannel }) {
   const channelStripRef = useRef(null)
+  const [introComplete, setIntroComplete] = useState(false)
 
   useEffect(() => {
+    const introTimer = window.setTimeout(() => setIntroComplete(true), 1500)
+    return () => window.clearTimeout(introTimer)
+  }, [])
+
+  useEffect(() => {
+    if (!introComplete) return
+
     const strip = channelStripRef.current
     if (!strip || !window.matchMedia('(max-width: 760px)').matches) return
 
     const featureCard = strip.querySelector('[data-channel-id="prime"]')
     featureCard?.scrollIntoView({ inline: 'center', block: 'nearest' })
-  }, [])
+  }, [introComplete])
 
   return (
     <section
@@ -33,7 +41,7 @@ function HeroSection({ channels, playingChannelId, onNavigateArchive, onToggleCh
 
       <header className="absolute left-1/2 top-[clamp(10px,1.7vw,18px)] z-[3] flex w-[var(--page-width)] -translate-x-1/2 items-start justify-between gap-6">
         <img
-          className="h-auto w-[clamp(118px,11vw,154px)]"
+          className="h-auto w-[clamp(118px,11vw,154px)] transition-[opacity,transform] duration-500"
           src={brandLogo}
           alt="SZUNET Radio"
         />
@@ -53,7 +61,7 @@ function HeroSection({ channels, playingChannelId, onNavigateArchive, onToggleCh
       />
 
       <div
-        className="absolute bottom-0 left-1/2 z-[2] flex w-[var(--page-width)] -translate-x-1/2 items-end justify-center gap-[clamp(9px,0.8vw,10px)] max-[760px]:inset-x-0 max-[760px]:bottom-[10px] max-[760px]:w-full max-[760px]:translate-x-0 max-[760px]:snap-x max-[760px]:snap-mandatory max-[760px]:justify-start max-[760px]:overflow-x-auto max-[760px]:px-[9vw] max-[760px]:[scrollbar-width:none] max-[760px]:[&::-webkit-scrollbar]:hidden"
+        className="absolute bottom-0 left-1/2 z-[2] flex w-[var(--page-width)] -translate-x-1/2 items-end justify-center gap-[clamp(9px,0.8vw,10px)] max-[760px]:inset-x-0 max-[760px]:bottom-[10px] max-[760px]:w-full max-[760px]:translate-x-0 max-[760px]:snap-x max-[760px]:snap-mandatory max-[760px]:justify-start max-[760px]:gap-4 max-[760px]:overflow-x-auto max-[760px]:overscroll-x-contain max-[760px]:px-3 max-[760px]:scroll-smooth max-[760px]:[scroll-padding-inline:12px] max-[760px]:[scrollbar-width:none] max-[760px]:[&::-webkit-scrollbar]:hidden"
         aria-label="Radio channels"
         ref={channelStripRef}
       >
@@ -62,11 +70,19 @@ function HeroSection({ channels, playingChannelId, onNavigateArchive, onToggleCh
             <ChannelCard
               channel={channel}
               index={index}
+              introActive={!introComplete}
               isPlaying={playingChannelId === channel.id}
               onToggle={onToggleChannel}
             />
           </div>
         ))}
+      </div>
+
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-[calc(var(--player-height)+4px)] z-[4] mx-auto h-[2px] w-[min(720px,72vw)] overflow-hidden rounded-full bg-white/35 opacity-0 shadow-[0_0_18px_rgba(255,255,255,0.34)] [animation:hero-loader_1.5s_ease-out_0s_1_both] max-[760px]:bottom-[calc(var(--player-height)+16px)] max-[760px]:w-[66vw]"
+        aria-hidden="true"
+      >
+        <span className="block h-full w-full origin-left bg-[#ff1111] [animation:hero-loader-fill_1.5s_cubic-bezier(.2,.8,.2,1)_0s_1_both]" />
       </div>
     </section>
   )

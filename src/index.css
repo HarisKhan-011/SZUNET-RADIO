@@ -23,3 +23,27 @@ a {
 img {
   max-width: 100%;
 }
+
+@keyframes hero-loader {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scaleX(0.72);
+  }
+  18%,
+  76% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0) scaleX(1);
+  }
+}
+
+@keyframes hero-loader-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}

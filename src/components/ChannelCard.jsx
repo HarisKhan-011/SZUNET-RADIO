@@ -8,9 +8,10 @@ const cardHeightByIndex = {
   4: 'h-[clamp(430px,37vw,540px)] max-[760px]:h-[min(66svh,438px)] max-[420px]:h-[min(64svh,400px)]',
 }
 
-function ChannelCard({ channel, index, isPlaying, onToggle }) {
+function ChannelCard({ channel, index, introActive = false, isPlaying, onToggle }) {
   const isFeature = channel.size === 'feature'
   const prefersReducedMotion = useReducedMotion()
+  const introOffset = index - 2
 
   return (
     <motion.article
@@ -18,15 +19,36 @@ function ChannelCard({ channel, index, isPlaying, onToggle }) {
         'relative min-w-0 snap-center overflow-hidden bg-[#111] shadow-[0_16px_32px_rgba(0,0,0,0.18)]',
         '[--footer-height:27%] [--play-size:clamp(54px,6.2vw,64px)]',
         'h-[clamp(398px,34vw,500px)] flex-[1_1_0]',
-        'max-[760px]:h-[min(66svh,430px)] max-[760px]:flex-[0_0_76vw] max-[420px]:h-[min(64svh,390px)] max-[420px]:flex-[0_0_78vw]',
+        'max-[760px]:h-[min(66svh,430px)] max-[760px]:flex-[0_0_calc(100vw-24px)] max-[760px]:snap-center max-[760px]:snap-always max-[420px]:h-[min(64svh,390px)]',
         isPlaying && 'outline-4 -outline-offset-4 outline-white',
         cardHeightByIndex[index],
         isFeature &&
-          '[--footer-height:24%] [--play-size:clamp(62px,7.2vw,74px)] h-[clamp(450px,39vw,575px)] flex-[1.34_1_0] max-[760px]:h-[min(70svh,470px)] max-[760px]:flex-[0_0_82vw] max-[420px]:h-[min(68svh,420px)] max-[420px]:flex-[0_0_84vw]',
+          '[--footer-height:24%] [--play-size:clamp(62px,7.2vw,74px)] h-[clamp(450px,39vw,575px)] flex-[1.34_1_0] max-[760px]:h-[min(70svh,470px)] max-[760px]:flex-[0_0_calc(100vw-24px)] max-[420px]:h-[min(68svh,420px)]',
       )}
-      initial={prefersReducedMotion ? false : { opacity: 0, y: 36, scale: 0.94 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.56, ease: 'easeOut', delay: 0.12 + index * 0.08 }}
+      initial={
+        prefersReducedMotion
+          ? false
+          : {
+              opacity: 0,
+              y: introActive ? -150 : 36,
+              x: introActive ? introOffset * 34 : 0,
+              rotate: introActive ? introOffset * -3.5 : 0,
+              scale: introActive ? 0.72 : 0.94,
+              filter: introActive ? 'saturate(0.85) brightness(1.08)' : 'none',
+            }
+      }
+      animate={{ opacity: 1, y: 0, x: 0, rotate: 0, scale: 1, filter: 'none' }}
+      transition={
+        introActive
+          ? {
+              type: 'spring',
+              stiffness: 92,
+              damping: 15,
+              mass: 0.82,
+              delay: 0.08 + index * 0.09,
+            }
+          : { duration: 0.56, ease: 'easeOut', delay: 0.12 + index * 0.08 }
+      }
     >
       <img
         className={cx(

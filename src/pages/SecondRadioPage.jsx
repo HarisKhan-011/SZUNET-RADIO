@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { brandAssets } from '../data/channels'
 import redBackground from '../assets/images/Rectangle 19.png'
-import smokeBase from '../assets/images/Vector (2).png'
+import rocketAsset from '../assets/images/Layer_3.png'
 import ScheduleSection from '../sections/ScheduleSection'
 import RadioChartsSection from '../sections/RadioChartsSection'
 import FooterSection from '../sections/FooterSection'
@@ -200,42 +200,46 @@ function RocketIllustration() {
 
   return (
     <div
-      className="pointer-events-none absolute bottom-[clamp(-38px,-2.7vw,-24px)] left-[70.15%] z-[8] grid w-[clamp(128px,11.2vw,168px)] -translate-x-1/2 justify-items-center max-[980px]:bottom-[-30px] max-[980px]:left-[72%] max-[980px]:w-[140px] max-[700px]:bottom-[-22px] max-[700px]:left-[74%] max-[700px]:w-[104px] max-[420px]:left-[78%] max-[420px]:w-[92px]"
+      className="pointer-events-none absolute left-[74%] top-[calc(clamp(400px,46vw,840px)-155px)] z-[9] h-[clamp(220px,18vw,260px)] w-[clamp(96px,8vw,124px)] -translate-x-1/2 max-[980px]:left-[75%] max-[980px]:top-[450px] max-[980px]:h-[238px] max-[980px]:w-[108px] max-[700px]:left-[75%] max-[700px]:top-[570px] max-[700px]:h-[202px] max-[700px]:w-[88px] max-[460px]:top-[536px] max-[420px]:h-[186px] max-[420px]:w-[78px]"
       aria-hidden="true"
     >
-      <motion.div
-        className="relative z-[2] mb-[-9px]"
+      <span className="absolute left-1/2 bottom-0 z-[1] h-[clamp(196px,17vw,242px)] w-[clamp(4px,0.42vw,6px)] -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,rgba(92,245,223,0.92),rgba(92,245,223,0.78)_48%,rgba(92,245,223,0.64)_72%,rgba(92,245,223,0.16))] shadow-[0_0_10px_rgba(92,245,223,0.34)] max-[700px]:h-[168px] max-[700px]:w-[4px] max-[420px]:h-[152px]" />
+      <motion.img
+        className="absolute left-1/2 bottom-[142px] z-[4] block h-auto w-[clamp(52px,4.2vw,64px)] max-w-none -translate-x-1/2 drop-shadow-[0_8px_10px_rgba(7,7,56,0.18)] max-[980px]:bottom-[136px] max-[980px]:w-[56px] max-[700px]:bottom-[114px] max-[700px]:w-[44px] max-[420px]:bottom-[104px] max-[420px]:w-[40px]"
+        src={rocketAsset}
+        alt=""
         animate={
           prefersReducedMotion ? undefined : { y: [-2, 3, -2], rotate: [-0.5, 0.5, -0.5] }
         }
         transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <div className="relative mx-auto h-[clamp(74px,6.4vw,96px)] w-[clamp(25px,2.35vw,34px)]">
-          <span className="absolute left-[23%] top-0 h-[31%] w-[54%] rounded-t-[28px] rounded-b-lg bg-[#ffdfd7] [clip-path:polygon(50%_0,100%_82%,0_82%)]" />
-          <span className="absolute inset-x-[20%] top-[20%] bottom-[17%] rounded-t-[26px] rounded-b-xl bg-[linear-gradient(90deg,#ffffff,#f2f7ff_55%,#c9d6e8)] shadow-[0_10px_18px_rgba(83,0,0,0.2)]" />
-          <span className="absolute left-[35%] top-[30%] h-[11%] w-[30%] rounded-full border-[clamp(2px,0.22vw,3px)] border-[#00a8c7] bg-[#60f0ff] shadow-[inset_0_0_0_2px_rgba(255,255,255,0.7)]" />
-          <span className="absolute bottom-[16%] left-0 h-[23%] w-[36%] bg-[#00dce6] [clip-path:polygon(100%_0,100%_100%,0_100%)]" />
-          <span className="absolute bottom-[16%] right-0 h-[23%] w-[36%] bg-[#00dce6] [clip-path:polygon(0_0,100%_100%,0_100%)]" />
-          <motion.span
-            className="absolute bottom-[-3px] left-[39%] h-[clamp(12px,1.45vw,19px)] w-[22%] rounded-full bg-[linear-gradient(#ffec5c,#ff8a00_52%,rgba(255,106,0,0))] [filter:drop-shadow(0_0_8px_rgba(255,235,80,0.5))] [transform-origin:top]"
-            animate={prefersReducedMotion ? undefined : { scaleY: [0.78, 1.14], opacity: [0.74, 1] }}
-            transition={{ duration: 0.52, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' }}
-          />
-        </div>
-      </motion.div>
+      />
 
       <motion.div
-        className="relative z-[1] mt-[-6px] grid h-[clamp(50px,5.2vw,78px)] w-[86%] origin-bottom items-end overflow-hidden"
+        className="absolute left-1/2 bottom-[30px] z-[2] h-[clamp(46px,4.4vw,58px)] w-[clamp(112px,11vw,164px)] -translate-x-1/2 origin-bottom max-[700px]:bottom-[26px] max-[700px]:h-[44px] max-[700px]:w-[118px] max-[420px]:bottom-[24px] max-[420px]:h-[38px] max-[420px]:w-[104px]"
         aria-hidden="true"
         initial={false}
         animate={prefersReducedMotion ? undefined : { scaleX: [0.995, 1.01, 0.995] }}
         transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <img
-          className="block h-full w-full max-w-none object-contain object-bottom opacity-[0.8] [filter:drop-shadow(0_4px_7px_rgba(7,7,56,0.06))]"
-          src={smokeBase}
-          alt=""
-        />
+        <span className="absolute left-1/2 bottom-0 h-[42%] w-[72%] -translate-x-1/2 rounded-full bg-[#5cf5df] opacity-95 shadow-[0_0_14px_rgba(92,245,223,0.28)]" />
+        <span className="absolute left-[9%] bottom-[5%] h-[36%] w-[26%] rounded-full bg-[#5cf5df]" />
+        <span className="absolute left-[24%] bottom-[18%] h-[45%] w-[30%] rounded-full bg-[#5cf5df]" />
+        <span className="absolute left-[43%] bottom-[14%] h-[52%] w-[32%] rounded-full bg-[#5cf5df]" />
+        <span className="absolute right-[13%] bottom-[8%] h-[38%] w-[27%] rounded-full bg-[#5cf5df]" />
+        <span className="absolute left-[2%] bottom-0 h-[24%] w-[24%] rounded-full bg-[#5cf5df] opacity-90" />
+        <span className="absolute right-[2%] bottom-0 h-[24%] w-[24%] rounded-full bg-[#5cf5df] opacity-90" />
+      </motion.div>
+      <motion.div
+        className="absolute left-1/2 bottom-[-8px] z-[1] h-[clamp(30px,3.2vw,42px)] w-[clamp(76px,7.5vw,116px)] -translate-x-1/2 origin-bottom max-[700px]:bottom-[-6px] max-[700px]:h-[30px] max-[700px]:w-[82px] max-[420px]:w-[74px]"
+        aria-hidden="true"
+        initial={false}
+        animate={prefersReducedMotion ? undefined : { scaleX: [1, 1.035, 1] }}
+        transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <span className="absolute inset-x-[18%] bottom-0 h-[48%] rounded-full bg-[#5cf5df] opacity-75" />
+        <span className="absolute left-[8%] bottom-[10%] h-[54%] w-[34%] rounded-full bg-[#5cf5df] opacity-64" />
+        <span className="absolute right-[8%] bottom-[10%] h-[54%] w-[34%] rounded-full bg-[#5cf5df] opacity-64" />
+        <span className="absolute left-[36%] bottom-[22%] h-[62%] w-[30%] rounded-full bg-[#5cf5df] opacity-72" />
       </motion.div>
     </div>
   )
@@ -290,7 +294,6 @@ function ScheduleTimelineSection() {
   return (
     <div className="relative z-[4] overflow-visible border-b-[4px] border-[#5cf5df] bg-white pb-0 pt-[clamp(10px,1.1vw,16px)] [--launch-x:70.15%] max-[700px]:overflow-hidden">
       <ScheduleSection variant="hero" />
-      <RocketIllustration />
     </div>
   )
 }
@@ -338,7 +341,7 @@ function ChartsSection() {
         transition={{ duration: 0.45, ease: 'easeOut' }}
       >
         CHARTS
-        <span className="absolute left-[-2%] right-[8%] bottom-[12%] -z-[1] h-[clamp(12px,1.4vw,22px)] bg-[#ff1111]" aria-hidden="true" />
+        <span className="pointer-events-none absolute left-[-1%] right-[4%] bottom-[12%] z-[2] h-[clamp(12px,1.4vw,22px)] bg-[#ff1111]" aria-hidden="true" />
       </motion.h1>
     </section>
   )
@@ -347,8 +350,11 @@ function ChartsSection() {
 function SecondRadioPage({ onNavigateHome }) {
   return (
     <div className="min-h-[100svh] overflow-x-hidden bg-[#5cf5df] text-white [--page-width:min(1448px,calc(100vw-40px))] max-[700px]:[--page-width:calc(100vw-24px)]">
-      <HeroRadioSection onNavigateHome={onNavigateHome} />
-      <ScheduleTimelineSection />
+      <div className="relative z-[1] overflow-visible">
+        <HeroRadioSection onNavigateHome={onNavigateHome} />
+        <ScheduleTimelineSection />
+        <RocketIllustration />
+      </div>
       <ChartsSection />
       <RadioChartsSection />
       <FooterSection />

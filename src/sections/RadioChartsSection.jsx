@@ -66,8 +66,11 @@ function ReactionIcons({ trend }) {
 function MusicMeta({ artist, title }) {
   return (
     <div className="grid min-w-0 gap-[2px] [font-family:Arial,Helvetica,sans-serif] leading-none text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.28)]">
-      <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(8px,0.78vw,12px)] font-[950] uppercase max-[620px]:text-[8px] max-[360px]:text-[7px]">
-        {artist}
+      <strong className="block w-fit max-w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(8px,0.78vw,12px)] font-[950] uppercase max-[620px]:text-[8px] max-[360px]:text-[7px]">
+        <span className="relative inline-block w-fit max-w-full overflow-hidden text-ellipsis whitespace-nowrap align-top">
+          <span className="relative z-[1]">{artist}</span>
+          <span className="absolute inset-x-0 top-2 z-0 h-[5px]  -translate-y-1/2 bg-[#050526]" aria-hidden="true" />
+        </span>
       </strong>
       <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(7px,0.68vw,10px)] font-extrabold max-[620px]:text-[7px] max-[360px]:text-[6px]">
         {title}
@@ -185,7 +188,7 @@ function ChartRow({ row, index }) {
 
 function RadioChartsSection() {
   return (
-    <section className="bg-[#5cf5df] pb-[clamp(28px,4vw,58px)]" aria-label="SZUNET RADIO charts">
+    <section className="bg-white pb-[clamp(28px,4vw,58px)]" aria-label="SZUNET RADIO charts">
       <div className="mx-auto grid w-[var(--page-width)] gap-[8px] overflow-hidden max-[620px]:w-[calc(100vw-20px)]">
         {radioChartRows.map((row, index) => (
           <ChartRow row={row} index={index} key={row.id} />

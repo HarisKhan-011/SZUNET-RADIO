@@ -76,14 +76,16 @@ function MixcloudCard({ item, variant = 'top' }) {
               {item.title}
             </h2>
             {item.subtitle && (
-              <strong className="relative z-0 m-0 block max-w-full overflow-hidden whitespace-nowrap [font-family:Arial,Helvetica,sans-serif] text-[clamp(20px,2vw,32px)] font-[950] leading-[0.88] max-[480px]:text-[clamp(17px,4.8vw,22px)]">
-                <span className="relative z-[1] block min-w-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
+              <strong className="m-0 block max-w-full overflow-hidden whitespace-nowrap [font-family:Arial,Helvetica,sans-serif] text-[clamp(20px,2vw,32px)] font-[950] leading-[0.88] max-[480px]:text-[clamp(17px,4.8vw,22px)]">
+                <span className="relative inline-block w-fit max-w-full overflow-hidden text-ellipsis whitespace-nowrap align-top">
+                  <span className="relative z-[1] text-white">
                   {item.subtitle}
+                  </span>
+                  <span
+                    className="absolute inset-x-0 bottom-[-0.02em] z-0 h-[0.3em] bg-[#ff1111] max-[480px]:h-[0.32em]"
+                    aria-hidden="true"
+                  />
                 </span>
-                <span
-                  className="absolute left-0 right-0 bottom-[-3px] z-0 h-[9px] bg-[#ff1111] max-[560px]:bottom-[-2px] max-[560px]:h-[7px]"
-                  aria-hidden="true"
-                />
               </strong>
             )}
           </>
